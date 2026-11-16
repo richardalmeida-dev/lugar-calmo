@@ -142,21 +142,31 @@
       preferencias = alterar(preferencias);
       aplicarPreferencias(preferencias);
       gravarPreferencias(preferencias);
+      // Ao chegar ao extremo, A- ou A+ vira disabled e o navegador tira o foco dele, deixando quem
+      // usa teclado sem ponto de partida (WCAG 2.4.3, RNF01). O foco passa para o botão de tamanho
+      // oposto, que continua ativo.
+      if (botao.disabled) {
+        const oposto = botao === botoes.menos ? botoes.mais : botoes.menos;
+        if (oposto) {
+          oposto.focus();
+        }
+      }
     });
   }
 
+  // Cada botão devolve um objeto novo que copia as preferências atuais e troca só o campo dele.
   // Math.max/min prendem o nível na faixa 0..4 mesmo se o clique chegar com o botão no limite.
   ligarBotao(botoes.menos, function (atual) {
-    return { fonte: Math.max(FONTE_MIN, atual.fonte - 1), contraste: atual.contraste, calmo: atual.calmo };
+    return { ...atual, fonte: Math.max(FONTE_MIN, atual.fonte - 1) };
   });
   ligarBotao(botoes.mais, function (atual) {
-    return { fonte: Math.min(FONTE_MAX, atual.fonte + 1), contraste: atual.contraste, calmo: atual.calmo };
+    return { ...atual, fonte: Math.min(FONTE_MAX, atual.fonte + 1) };
   });
   ligarBotao(botoes.contraste, function (atual) {
-    return { fonte: atual.fonte, contraste: !atual.contraste, calmo: atual.calmo };
+    return { ...atual, contraste: !atual.contraste };
   });
   ligarBotao(botoes.calmo, function (atual) {
-    return { fonte: atual.fonte, contraste: atual.contraste, calmo: !atual.calmo };
+    return { ...atual, calmo: !atual.calmo };
   });
 
   // Publica no namespace único do projeto (PRD 10). Só leitura: ninguém de fora troca o estado.
@@ -168,7 +178,7 @@
      * @returns {{fonte: number, contraste: boolean, calmo: boolean}}
      */
     obterPreferencias: function () {
-      return { fonte: preferencias.fonte, contraste: preferencias.contraste, calmo: preferencias.calmo };
+      return { ...preferencias };
     }
   });
 })();

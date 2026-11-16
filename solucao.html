@@ -69,12 +69,14 @@
         </div>
 
         <!-- 4 sliders de 0 a 5, padrão 3 (RN01, RF02). Sem fieldset por controle para economizar altura (8.3).
-             O <output> mostra o número ao lado; app.js atualiza também o aria-valuetext ("3 de 5"). -->
+             O <output> mostra o número ao lado; app.js atualiza também o aria-valuetext ("3 de 5").
+             aria-live="off" no <output>: o slider já anuncia o valor e o #resumo-lista anuncia o resultado;
+             sem isso o leitor de tela repetiria o número a cada passo (sobrecarga sensorial, R10). -->
         <div class="controle-sensibilidade">
           <div class="controle-linha">
             <label for="sens-ruido">Ruído</label>
             <span class="legenda" id="leg-ruido">0 nada, 5 muito</span>
-            <output id="valor-ruido" for="sens-ruido">3</output>
+            <output id="valor-ruido" for="sens-ruido" aria-live="off">3</output>
           </div>
           <input type="range" id="sens-ruido" min="0" max="5" step="1" value="3" aria-describedby="leg-ruido">
         </div>
@@ -83,7 +85,7 @@
           <div class="controle-linha">
             <label for="sens-luz">Iluminação</label>
             <span class="legenda" id="leg-luz">0 nada, 5 muito</span>
-            <output id="valor-luz" for="sens-luz">3</output>
+            <output id="valor-luz" for="sens-luz" aria-live="off">3</output>
           </div>
           <input type="range" id="sens-luz" min="0" max="5" step="1" value="3" aria-describedby="leg-luz">
         </div>
@@ -92,7 +94,7 @@
           <div class="controle-linha">
             <label for="sens-lotacao">Lotação</label>
             <span class="legenda" id="leg-lotacao">0 nada, 5 muito</span>
-            <output id="valor-lotacao" for="sens-lotacao">3</output>
+            <output id="valor-lotacao" for="sens-lotacao" aria-live="off">3</output>
           </div>
           <input type="range" id="sens-lotacao" min="0" max="5" step="1" value="3" aria-describedby="leg-lotacao">
         </div>
@@ -101,7 +103,7 @@
           <div class="controle-linha">
             <label for="sens-cheiro">Cheiros</label>
             <span class="legenda" id="leg-cheiro">0 nada, 5 muito</span>
-            <output id="valor-cheiro" for="sens-cheiro">3</output>
+            <output id="valor-cheiro" for="sens-cheiro" aria-live="off">3</output>
           </div>
           <input type="range" id="sens-cheiro" min="0" max="5" step="1" value="3" aria-describedby="leg-cheiro">
         </div>
