@@ -45,7 +45,8 @@
     // RN07: turno fora de turnosAbertos não tem nota.
     if (!local.turnosAbertos.includes(turno)) return 'fechado';
     // RN16: contribuição só tem ruído e lotação no turno informado; nos outros turnos eles são null.
-    if (local.ruido[turno] === null || local.lotacao[turno] === null) return 'sem-dados';
+    // typeof (e não === null) para que um dado ausente (undefined) também vire "sem dados", nunca NaN.
+    if (typeof local.ruido[turno] !== 'number' || typeof local.lotacao[turno] !== 'number') return 'sem-dados';
     return 'aberto';
   }
 
@@ -209,12 +210,23 @@
   }
 
   /**
+   * Limpa o nome digitado: normaliza acentos (NFC), tira caracteres invisíveis de largura zero e faz trim.
+   * Texto colado de mensageiros traz U+200B/U+2060/U+FEFF e acentos decompostos, que driblariam a RN12
+   * e o mínimo de 3 caracteres e deixariam o título do card vazio.
+   * @param {string} nome nome como veio do formulário
+   * @returns {string} nome limpo, com as maiúsculas e os espaços internos originais
+   */
+  function limparNome(nome) {
+    return nome.normalize('NFC').replace(/[​-‍⁠﻿]/g, '').trim();
+  }
+
+  /**
    * Forma canônica do nome para detectar duplicados (RN12).
    * @param {string} nome nome digitado ou já cadastrado
-   * @returns {string} nome sem espaços nas pontas, com espaços múltiplos colapsados e em minúsculas
+   * @returns {string} nome limpo, com espaços múltiplos colapsados e em minúsculas
    */
   function normalizarNome(nome) {
-    return nome.trim().replace(/\s+/g, ' ').toLocaleLowerCase('pt-BR');
+    return limparNome(nome).replace(/\s+/g, ' ').toLocaleLowerCase('pt-BR');
   }
 
   /**
@@ -229,7 +241,7 @@
     // As chaves entram na ordem do formulário (K6): o formulário usa Object.keys(erros) para montar o resumo e focar o primeiro.
     const erros = {};
 
-    const nome = valores.nome.trim();
+    const nome = limparNome(valores.nome);
     if (nome === '') {
       erros.nome = 'Informe o nome do local.';
     } else if (nome.length < 3 || nome.length > 60) {
@@ -266,7 +278,7 @@
   function criarLocalDeContribuicao(valores, proximoId) {
     return {
       id: proximoId,
-      nome: valores.nome.trim(),
+      nome: limparNome(valores.nome),
       tipo: valores.tipo,
       // RN16: só o turno da visita recebe dados; nos outros o card mostra "Sem dados neste turno".
       ruido: { manha: null, tarde: null, noite: null, [valores.turno]: Number(valores.ruido) },
