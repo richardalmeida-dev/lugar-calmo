@@ -87,6 +87,11 @@
    * @returns {void}
    */
   function aplicarPerfilRapido(chave) {
+    // Um data-perfil desconhecido (ou herdado, como "toString") deixaria o perfil com NaN em todas as
+    // notas; nesse caso o clique não muda nada.
+    if (!Object.prototype.hasOwnProperty.call(dados.PERFIS_RAPIDOS, chave)) {
+      return;
+    }
     const perfil = dados.PERFIS_RAPIDOS[chave];
     ESTIMULOS.forEach((estimulo) => {
       estado.perfil[estimulo] = perfil[estimulo];
@@ -143,7 +148,9 @@
   // RF02: o evento input recalcula enquanto o slider se move, com mouse, toque ou setas do teclado.
   ESTIMULOS.forEach((estimulo) => {
     controles[estimulo].slider.addEventListener('input', (evento) => {
-      estado.perfil[estimulo] = Number(evento.target.value);
+      // RN01: inteiro de 0 a 5 mesmo se o min/max do HTML for alterado no navegador.
+      const valor = Math.round(Number(evento.target.value)) || 0;
+      estado.perfil[estimulo] = Math.min(dados.SENSIBILIDADE.max, Math.max(dados.SENSIBILIDADE.min, valor));
       mostrarSensibilidade(estimulo);
       // RF19: valor ajustado à mão deixa de ser um perfil rápido, então nenhum botão fica pressionado.
       marcarPerfil(null);
@@ -161,6 +168,10 @@
   // RF03: change dispara só no rádio que acabou de ser marcado.
   radiosTurno.forEach((radio) => {
     radio.addEventListener('change', () => {
+      // Um value fora dos 3 turnos faria todos os cards virarem "Fechado" e o resumo falhar.
+      if (!dados.TURNOS.some((turno) => turno.id === radio.value)) {
+        return;
+      }
       estado.turno = radio.value;
       atualizar();
     });

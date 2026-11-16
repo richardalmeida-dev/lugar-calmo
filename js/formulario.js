@@ -25,6 +25,9 @@
   const fieldsetTurno = document.getElementById('campo-turno');
   const radiosTurno = form.querySelectorAll('input[name="campo-turno"]');
 
+  // Vira true logo após um envio válido e volta a false na próxima alteração do formulário (ver enviar).
+  let acabouDeEnviar = false;
+
   /**
    * Acrescenta opções a um select com createElement e textContent (K4), sem HTML bruto.
    * @param {HTMLSelectElement} select select que já traz a opção vazia fixa do HTML
@@ -157,15 +160,33 @@
   function enviar(evento) {
     // A página nunca recarrega: a contribuição vive só na memória (RN15).
     evento.preventDefault();
+    // Clique duplo em "Enviar" (comum para quem tem pouca familiaridade digital): o 2º envio chegaria
+    // ao formulário já limpo e trocaria a confirmação por 8 erros. Ignoramos até a pessoa mexer de novo.
+    if (acabouDeEnviar) {
+      return;
+    }
     limparErros();
+    // Uma confirmação antiga ao lado de erros novos (ou de uma falha) confundiria quem está enviando.
+    mensagemSucesso.textContent = '';
+
+    // Lido só aqui: app.js carrega depois deste arquivo (K3). Se ele não carregou, não há lista para
+    // checar duplicado nem para inserir; avisamos na página em vez de falhar em silêncio (R3, RF12).
+    if (!LC.app) {
+      const aviso = document.createElement('p');
+      aviso.textContent = 'Não foi possível enviar agora porque a lista de locais não carregou. ' +
+        'Recarregue a página e tente de novo.';
+      resumoErros.replaceChildren(aviso);
+      resumoErros.hidden = false;
+      resumoErros.focus();
+      console.error('Lugar Calmo: LugarCalmo.app indisponível; a contribuição não foi inserida.');
+      return;
+    }
 
     const valores = lerValores();
-    // Lido só aqui: app.js carrega depois deste arquivo (K3). A lista inclui as contribuições já enviadas (RF11).
+    // A lista inclui as contribuições já enviadas na sessão (RF11).
     const locaisAtuais = LC.app.locais();
     const { valido, erros } = calculo.validarContribuicao(valores, locaisAtuais);
     if (!valido) {
-      // Uma confirmação antiga ao lado de erros novos confundiria quem está corrigindo.
-      mensagemSucesso.textContent = '';
       mostrarErros(erros);
       return;
     }
@@ -181,14 +202,22 @@
       `com dados do turno ${rotuloTurno}. Ela some ao recarregar a página.`;
     form.reset();
     atualizarContador();
+    acabouDeEnviar = true;
   }
+
+  // O envio é ligado ANTES do resto: se algo abaixo falhar, o botão ainda não faz um envio nativo,
+  // que recarregaria a página e apagaria o que foi digitado e as contribuições da sessão (RN15).
+  form.addEventListener('submit', enviar);
+  // Qualquer alteração depois de um envio bem-sucedido libera um novo envio.
+  form.addEventListener('input', () => {
+    acabouDeEnviar = false;
+  });
 
   // K4: tipos e perfis de remetente vêm de dados.js; o HTML traz só a opção vazia fixa.
   adicionarOpcoes(document.getElementById('campo-tipo'), dados.TIPOS_LOCAL.map((tipo) => [tipo, tipo]));
   adicionarOpcoes(document.getElementById('campo-perfil'), Object.entries(dados.PERFIS_REMETENTE));
 
   comentario.addEventListener('input', atualizarContador);
-  form.addEventListener('submit', enviar);
   // O navegador pode devolver o texto do comentário ao recarregar; o contador começa já certo.
   atualizarContador();
 })(window.LugarCalmo = window.LugarCalmo || {});
