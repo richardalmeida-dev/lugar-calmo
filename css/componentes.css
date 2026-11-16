@@ -357,6 +357,36 @@ button:disabled {
   width: 100%;
 }
 
+/* 11.3: painel inteiro acima da dobra em 1366x650 e 1440x800. Só a
+   partir de 1024 px (mobile-first: no celular nada muda). Encolhem só
+   os respiros e as entrelinhas dos textos de apoio; botões, rótulos do
+   turno, Restaurar e sliders mantêm 44 px (RNF13) e o foco continua com
+   3 px (RNF01). O padding de 12 px é maior que contorno + afastamento
+   do foco (5 px), então o overflow do painel sticky não corta o foco. */
+@media (min-width: 1024px) {
+  #painel-perfil {
+    gap: var(--espaco-1);
+    padding: var(--espaco-3);
+  }
+  #painel-perfil h2 {
+    font-size: 1.125rem;
+  }
+
+  /* Entrelinha 1.2 nos rótulos de uma linha: o texto continua do mesmo
+     tamanho, só some a folga acima e abaixo. */
+  .rotulo-grupo,
+  .seletor-turno legend,
+  .controle-linha label,
+  .legenda {
+    line-height: 1.2;
+  }
+
+  /* Número do valor um pouco menor para não esticar a linha do slider. */
+  .controle-linha output {
+    font-size: 1.125rem;
+  }
+}
+
 /* ---------- Avisos ---------- */
 
 /* Avisos (RN02 e "Fechado/Sem dados neste turno") usam as cores do selo

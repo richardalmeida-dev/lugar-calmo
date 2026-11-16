@@ -48,8 +48,12 @@
 
   <!-- tabindex="-1" deixa o link "Ir para o conteúdo" mover o foco para cá. -->
   <main id="conteudo" tabindex="-1">
-    <h1>Mapa Sensorial</h1>
-    <p class="introducao">Diga o quanto cada estímulo incomoda você e escolha o turno. A lista mostra os lugares do mais ao menos compatível.</p>
+    <!-- Título e instrução lado a lado no desktop (layout.css), para o painel caber inteiro acima da dobra (11.3).
+         A frase é curta para ficar em 1 linha; o h2 da lista já diz que a ordem vai do mais ao menos compatível. -->
+    <div class="titulo-solucao">
+      <h1>Mapa Sensorial</h1>
+      <p class="introducao">Diga o quanto cada estímulo incomoda você e escolha o turno.</p>
+    </div>
 
     <!-- Duas colunas a partir de 1024 px (11.3): painel à esquerda, resultados e formulário à direita. -->
     <div class="layout-solucao">
