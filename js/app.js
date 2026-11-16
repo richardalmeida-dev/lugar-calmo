@@ -65,10 +65,11 @@
    * @returns {void}
    */
   function mostrarSensibilidade(estimulo) {
+    const { slider, saida } = controles[estimulo];
     const valor = String(estado.perfil[estimulo]);
-    controles[estimulo].slider.value = valor;
-    controles[estimulo].saida.textContent = valor;
-    controles[estimulo].slider.setAttribute('aria-valuetext', `${valor} de ${dados.SENSIBILIDADE.max}`);
+    slider.value = valor;
+    saida.textContent = valor;
+    slider.setAttribute('aria-valuetext', `${valor} de ${dados.SENSIBILIDADE.max}`);
   }
 
   /**

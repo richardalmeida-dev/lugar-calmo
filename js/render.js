@@ -157,11 +157,12 @@
     const { local, situacao, nota, selo, melhor, efetivos } = avaliacao;
     const prefixo = `local-${local.id}`;
     const aberto = situacao === 'aberto';
+    const contribuicao = local.enviadoPeloUsuario === true;
 
     // K8: --fechado vale para 'fechado' e 'sem-dados'; --novo marca toda contribuição da sessão (12.2).
     const classes = ['card-local'];
     if (!aberto) classes.push('card-local--fechado');
-    if (local.enviadoPeloUsuario === true) classes.push('card-local--novo');
+    if (contribuicao) classes.push('card-local--novo');
     const card = criarElemento('article', { classe: classes.join(' '), atributos: { 'aria-labelledby': `${prefixo}-nome` } });
 
     const topo = criarElemento('header', { classe: 'card-topo' });
@@ -170,7 +171,10 @@
       criarElemento('h3', { texto: local.nome, atributos: { id: `${prefixo}-nome` } }),
       criarElemento('p', { classe: 'card-tipo', texto: local.tipo })
     );
-    const origem = local.ficticio ? ROTULO_FICTICIO : (local.enviadoPeloUsuario ? ROTULO_CONTRIBUICAO : null);
+    // RN10 e RN13: o rótulo diz de onde veio o dado; o fictício tem prioridade.
+    let origem = null;
+    if (local.ficticio) origem = ROTULO_FICTICIO;
+    else if (local.enviadoPeloUsuario) origem = ROTULO_CONTRIBUICAO;
     if (origem !== null) topo.append(criarElemento('p', { classe: 'rotulo-origem', texto: origem }));
     card.append(topo);
 
@@ -198,12 +202,14 @@
     if (efetivos !== null) card.append(criarEstimulos(efetivos));
 
     // Só contribuições têm relato e remetente; os dois entram como texto (RNF05).
-    if (local.enviadoPeloUsuario === true && local.comentario) {
-      card.append(criarElemento('p', { classe: 'relato', texto: `Relato: ${local.comentario}` }));
-    }
-    if (local.enviadoPeloUsuario === true && local.perfilRemetente) {
-      // K8: mostra o rótulo do perfil, nunca a chave interna.
-      card.append(criarElemento('p', { classe: 'remetente', texto: `Enviado por: ${PERFIS_REMETENTE[local.perfilRemetente]}` }));
+    if (contribuicao) {
+      if (local.comentario) {
+        card.append(criarElemento('p', { classe: 'relato', texto: `Relato: ${local.comentario}` }));
+      }
+      if (local.perfilRemetente) {
+        // K8: mostra o rótulo do perfil, nunca a chave interna.
+        card.append(criarElemento('p', { classe: 'remetente', texto: `Enviado por: ${PERFIS_REMETENTE[local.perfilRemetente]}` }));
+      }
     }
     return card;
   }
