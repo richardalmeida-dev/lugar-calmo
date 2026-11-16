@@ -1,0 +1,141 @@
+/*
+ * temas.css: Modo Calmo, Alto Contraste e movimento reduzido (PRD 11.2, RF13, RF15, RNF01, RNF08, R10).
+ *
+ * Como funciona: js/acessibilidade.js liga as classes .modo-calmo e .alto-contraste no <html>.
+ * Os outros arquivos de CSS só usam var(--...) (contrato K2), então quase todo o tema
+ * se resume a sobrescrever os tokens da seção 11.1. As regras extras abaixo cobrem
+ * o que um token não alcança (entrelinha, movimento, imagens, sublinhado e cor dos links).
+ *
+ * Ordem importa: Alto Contraste vem DEPOIS do Modo Calmo. Os dois blocos de tokens têm a
+ * mesma especificidade, então, com os dois ligados, as cores do Alto Contraste vencem
+ * e os espaçamentos do Modo Calmo continuam valendo (PRD 11.2).
+ */
+
+/* ===================== Modo Calmo (RF13) ===================== */
+
+/*
+ * :root.modo-calmo tem especificidade maior que o :root de base.css, então vence
+ * mesmo se a ordem dos <link> mudar.
+ * Cores dessaturadas, todas com contraste >= 4,5:1 (RNF01). Razões calculadas:
+ *   texto #2B3A3A: 10,44 no fundo, 11,32 na superfície
+ *   texto suave #4A5858: 6,53 no fundo, 7,08 na superfície
+ *   botão primário (#FFFFFF sobre #2E5E5A): 7,33; link #2E5E5A: 6,44 no fundo
+ *   selos (texto sobre o próprio fundo): tranquilo 6,56, atenção 6,62, evitar 7,16
+ *   textos dos selos no fundo da página (reuso em erro/aviso, K2): 6,97, 6,86 e 7,71
+ */
+:root.modo-calmo {
+  --cor-fundo: #EEF1EF;
+  --cor-superficie: #F8FAF9;
+  --cor-borda: #C9D1CD;
+  --cor-texto: #2B3A3A;
+  --cor-texto-suave: #4A5858;
+  --cor-primaria: #2E5E5A;
+  --cor-primaria-texto: #FFFFFF;
+  --cor-foco: #2E5E5A;
+  --selo-tranquilo-fundo: #E2ECE6; --selo-tranquilo-texto: #2D5A40;
+  --selo-atencao-fundo: #F2ECDD;   --selo-atencao-texto: #6A4D1C;
+  --selo-evitar-fundo: #F3E5E3;    --selo-evitar-texto: #7D3333;
+
+  /* Espaçamentos cerca de 25% maiores: menos informação por área, leitura mais folgada. */
+  --espaco-1: .375rem;
+  --espaco-2: .625rem;
+  --espaco-3: 1rem;
+  --espaco-4: 1.25rem;
+  --espaco-6: 2rem;
+  --espaco-8: 2.5rem;
+}
+
+/* Entrelinha maior (PRD 11.2); parágrafos, listas e cards herdam do body. */
+.modo-calmo body {
+  line-height: 1.8;
+}
+
+/*
+ * Nenhum movimento no Modo Calmo, mesmo se a pessoa não marcou "reduzir movimento"
+ * no sistema (RNF08, R10). O !important é necessário para vencer qualquer regra de
+ * componente, que sempre teria especificidade maior que um seletor universal.
+ */
+.modo-calmo *,
+.modo-calmo *::before,
+.modo-calmo *::after {
+  transition: none !important;
+  animation: none !important;
+  scroll-behavior: auto !important;
+}
+
+/* Imagens e enfeites marcados como .decorativo somem: menos estímulo visual. */
+.modo-calmo .decorativo {
+  display: none !important;
+}
+
+/* ===================== Alto Contraste (RF15) ===================== */
+
+/*
+ * Preto e branco puros (21:1). Amarelo #FFD400 para links, foco e botão primário
+ * (14,67:1 sobre preto; texto preto sobre o amarelo também 14,67:1).
+ * color-scheme: dark faz os controles nativos (select, checkbox, slider) usarem a
+ * versão escura do navegador, evitando caixas brancas no meio da tela preta.
+ */
+:root.alto-contraste {
+  color-scheme: dark;
+  --cor-fundo: #000000;
+  --cor-superficie: #000000;
+  --cor-borda: #FFFFFF;
+  --cor-texto: #FFFFFF;
+  --cor-texto-suave: #FFFFFF;
+  --cor-primaria: #FFD400;
+  --cor-primaria-texto: #000000;
+  --cor-foco: #FFD400;
+  /* Selos, erros, avisos e sucesso (que reusam estes tokens, K2) ficam preto e branco. */
+  --selo-tranquilo-fundo: #000000; --selo-tranquilo-texto: #FFFFFF;
+  --selo-atencao-fundo: #000000;   --selo-atencao-texto: #FFFFFF;
+  --selo-evitar-fundo: #000000;    --selo-evitar-texto: #FFFFFF;
+}
+
+/*
+ * Só com os tokens acima já ficam certos, sem regra extra (os componentes usam var(--...)):
+ * - foco amarelo: :focus-visible usa --cor-foco;
+ * - selos com fundo preto, borda e texto brancos: fundo --selo-*-fundo, texto --selo-*-texto
+ *   e borda currentColor;
+ * - campos de formulário pretos com texto e borda brancos: --cor-superficie, --cor-texto
+ *   e --cor-texto-suave;
+ * - <meter> legível: trilho --cor-fundo (preto), contorno --cor-texto-suave (branco) e
+ *   barra --selo-*-texto (branca). O número e o selo em texto continuam ao lado.
+ */
+
+/* Todo link sublinhado: a pista não depende só da cor (WCAG 1.4.1). */
+.alto-contraste a {
+  text-decoration: underline;
+}
+
+/*
+ * Links comuns em amarelo, inclusive os do menu (que usam --cor-texto e ficariam brancos).
+ * Ficam de fora os links com classe ou aria-current (ex.: link de pular conteúdo, item
+ * atual do menu): esses podem ter fundo --cor-primaria, e forçar amarelo neles daria
+ * texto amarelo sobre fundo amarelo. Eles já ficam legíveis pelos tokens acima.
+ */
+.alto-contraste a:not([class]):not([aria-current]) {
+  color: #FFD400;
+}
+
+/*
+ * Ícones são <img> SVG e não herdam a cor do texto. brightness(0) deixa o desenho
+ * preto e invert(1) o torna branco (contrato K2). Vale para selos, etiquetas e marca.
+ */
+.alto-contraste img[src*="icone-"],
+.alto-contraste .marca img {
+  filter: brightness(0) invert(1);
+}
+
+/* ===================== Movimento reduzido (R10, RNF08) ===================== */
+
+/* Quem pediu menos movimento no sistema não vê transição, animação nem rolagem suave. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+}
