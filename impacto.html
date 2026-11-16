@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Impacto social do Lugar Calmo: o que o protótipo demonstra, metas dos ODS, plano de ampliação, validação com pessoas reais e privacidade.">
+  <title>Impacto | Lugar Calmo</title>
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <!-- Ordem fixa (8.1): base (variáveis) primeiro e temas por último, para que Modo Calmo e Alto Contraste sobrescrevam as variáveis. -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/componentes.css">
+  <link rel="stylesheet" href="css/temas.css">
+  <!-- R2: script com defer e sem módulos, para abrir por duplo clique (file://). Aplica as preferências salvas (RF20). -->
+  <script src="js/acessibilidade.js" defer></script>
+</head>
+<body>
+  <!-- Atalho de teclado: pula o cabeçalho e vai direto ao conteúdo. -->
+  <a class="pular-conteudo" href="#conteudo">Ir para o conteúdo</a>
+
+  <!-- Cabeçalho idêntico nas 4 páginas (RF16); só o aria-current muda. -->
+  <header class="cabecalho">
+    <a class="marca" href="index.html"><img src="img/favicon.svg" alt="" width="32" height="32"> Lugar Calmo</a>
+    <!-- Menu horizontal com 4 links, sempre visível, sem hambúrguer (R11). -->
+    <nav aria-label="Navegação principal">
+      <ul class="menu">
+        <li><a href="index.html">Início</a></li>
+        <li><a href="solucao.html">Solução</a></li>
+        <li><a href="impacto.html" aria-current="page">Impacto</a></li>
+        <li><a href="equipe.html">Equipe</a></li>
+      </ul>
+    </nav>
+    <!-- Barra de acessibilidade (M5). O comportamento fica em js/acessibilidade.js (RF13, RF14, RF15). -->
+    <div class="barra-acessibilidade" role="group" aria-label="Preferências de leitura">
+      <button type="button" id="btn-fonte-menos" aria-label="Diminuir tamanho do texto">A-</button>
+      <button type="button" id="btn-fonte-mais" aria-label="Aumentar tamanho do texto">A+</button>
+      <button type="button" id="btn-contraste" aria-pressed="false">Alto contraste</button>
+      <button type="button" id="btn-modo-calmo" aria-pressed="false">Modo Calmo</button>
+    </div>
+  </header>
+
+  <!-- tabindex="-1" deixa o link "Ir para o conteúdo" mover o foco para cá. -->
+  <main id="conteudo" tabindex="-1">
+    <h1>Impacto social</h1>
+    <p class="introducao">O que o Lugar Calmo já mostra hoje, o que depende de uso real na cidade e como o projeto pode crescer.</p>
+
+    <!-- 1. Níveis de evidência: separa o que o protótipo prova do que ainda depende de implantação (8.5). -->
+    <section class="secao" aria-labelledby="titulo-evidencia">
+      <h2 id="titulo-evidencia">Níveis de evidência</h2>
+      <div class="colunas-evidencia">
+        <div class="cartao">
+          <h3>O que o protótipo demonstra hoje</h3>
+          <ul>
+            <li><strong>Cálculo personalizado:</strong> a nota de 0 a 100 muda conforme o seu perfil sensorial.</li>
+            <li><strong>Ordenação por turno:</strong> a lista muda de manhã, à tarde e à noite.</li>
+            <li><strong>Modo Calmo e acessibilidade nativa:</strong> tamanho do texto, alto contraste, uso pelo teclado e pelo leitor de tela.</li>
+            <li><strong>Colaboração validada:</strong> o formulário confere cada campo antes de aceitar uma avaliação.</li>
+          </ul>
+        </div>
+        <div class="cartao">
+          <h3>O que depende de implantação real</h3>
+          <ul>
+            <li><strong>Certificação de estabelecimentos.</strong></li>
+            <li><strong>Redução estatística de crises em escala municipal.</strong></li>
+          </ul>
+          <p>Esses resultados só podem ser medidos com o uso real na cidade. Os 12 locais do mapa são fictícios, criados só para demonstração.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. ODS em tabela com caption e cabeçalhos (8.5). Texto da Parte 8 do documento mestre ainda a conferir (K9). -->
+    <section class="secao" aria-labelledby="titulo-ods">
+      <h2 id="titulo-ods">Objetivos de Desenvolvimento Sustentável (ODS)</h2>
+      <!-- A caixa rola sozinha em telas estreitas; tabindex="0" deixa rolar pelo teclado. -->
+      <div class="tabela-rolagem" role="region" aria-labelledby="legenda-ods" tabindex="0">
+        <table class="tabela-ods">
+          <caption id="legenda-ods">Metas dos ODS e como o Lugar Calmo contribui</caption>
+          <thead>
+            <tr>
+              <th scope="col">ODS</th>
+              <th scope="col">Meta</th>
+              <th scope="col">Contribuição</th>
+              <th scope="col">Indicador</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">ODS 10: Redução das desigualdades (principal)</th>
+              <td>10.2: inclusão social, econômica e política de todas as pessoas, inclusive com deficiência.</td>
+              <td>Informação sensorial para pessoas autistas e neurodivergentes decidirem aonde ir com autonomia.</td>
+              <td>Locais avaliados com espaço calmo, saída fácil ou equipe treinada.</td>
+            </tr>
+            <tr>
+              <th scope="row">ODS 11: Cidades e comunidades sustentáveis (principal)</th>
+              <td>11.7: espaços públicos seguros, inclusivos e acessíveis para todos.</td>
+              <td>Ruído, iluminação, lotação e cheiro de cada espaço, por turno.</td>
+              <td>Meta piloto: 50 locais em 6 meses.</td>
+            </tr>
+            <tr>
+              <th scope="row">ODS 3: Saúde e bem-estar (complementar)</th>
+              <td>3.4: promover a saúde mental e o bem-estar.</td>
+              <td>Ajuda a evitar sobrecarga sensorial ao escolher lugar e horário.</td>
+              <td>Locais com hora silenciosa informada.</td>
+            </tr>
+            <tr>
+              <th scope="row">ODS 4: Educação de qualidade (complementar)</th>
+              <td>4.5: igualdade de acesso à educação, inclusive para pessoas com deficiência.</td>
+              <td>Bibliotecas e centros culturais classificados por turno.</td>
+              <td>Bibliotecas e centros culturais avaliados.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p><a href="https://brasil.un.org/pt-br/sdgs" target="_blank" rel="noopener noreferrer">Fonte das metas: Nações Unidas Brasil<span class="visualmente-oculto"> (abre em nova aba)</span></a></p>
+      <p><span class="pendente">[PREENCHER: conferir com a Parte 8 do documento mestre]</span></p>
+    </section>
+
+    <!-- 3. Ecossistema: quem participa e ganha com o projeto (8.5). -->
+    <section class="secao" aria-labelledby="titulo-ecossistema">
+      <h2 id="titulo-ecossistema">Ecossistema</h2>
+      <ul class="grade-cartoes">
+        <li class="cartao"><strong>Cidadãos neurodivergentes:</strong> usam o mapa e contribuem com avaliações.</li>
+        <li class="cartao"><strong>Famílias e cuidadores:</strong> planejam a saída com mais segurança.</li>
+        <li class="cartao"><strong>Associações de autismo:</strong> parceiras para validar e divulgar o projeto.</li>
+        <li class="cartao"><strong>Comércio local:</strong> mercados, cafés e outros negócios do bairro.</li>
+        <li class="cartao"><strong>Equipamentos públicos:</strong> UBS, CRAS, bibliotecas e parques.</li>
+      </ul>
+    </section>
+
+    <!-- 4. Plano de ampliação em 3 ondas, em ordem (8.5). -->
+    <section class="secao" aria-labelledby="titulo-ampliacao">
+      <h2 id="titulo-ampliacao">Plano de ampliação em 3 ondas</h2>
+      <ol class="passos">
+        <li><strong>Piloto:</strong> um bairro com 50 locais.</li>
+        <li><strong>Parceria com prefeituras:</strong> incluir UBS, CRAS e bibliotecas.</li>
+        <li><strong>Dados abertos:</strong> integração com aplicativos de mobilidade.</li>
+      </ol>
+    </section>
+
+    <!-- 5. Protocolo de validação, 5 passos da Parte 7 do documento mestre, ainda a conferir (K9). -->
+    <section class="secao" aria-labelledby="titulo-protocolo">
+      <h2 id="titulo-protocolo">Protocolo de validação com pessoas reais</h2>
+      <ol class="passos">
+        <li><strong>Meta de 3 a 5 conversas</strong> com pessoas autistas, familiares e comerciantes.</li>
+        <li><strong>Consentimento e códigos:</strong> cada pessoa autoriza antes de começar e aparece só como P1, P2 e assim por diante, nunca pelo nome.</li>
+        <li><strong>Roteiro não tendencioso:</strong> perguntas abertas, que não induzem a resposta.</li>
+        <li><strong>Tarefas de uso TU1 a TU5:</strong> a pessoa usa o protótipo e a equipe observa onde ela tem dificuldade.</li>
+        <li><strong>Registro transparente:</strong> anotar o que foi ouvido, inclusive as críticas, sem aumentar nem inventar resultados.</li>
+      </ol>
+      <p><span class="pendente">[PREENCHER: conferir com a Parte 7 do documento mestre]</span></p>
+    </section>
+
+    <!-- 6. Status da validação (8.5, item 6). Texto padrão: nunca inventar número.
+         Equipe: quando houver escuta real, trocar por "Ouvimos N pessoas (P1 a PN) em DD/11/2026". -->
+    <section class="secao" aria-labelledby="titulo-status">
+      <h2 id="titulo-status">Status da validação</h2>
+      <p id="status-validacao">A validação comunitária com pessoas autistas, familiares e comerciantes é a próxima etapa do projeto.</p>
+    </section>
+
+    <!-- 7. Visão futura (M8): só descrita em texto, fora do protótipo (3.2). -->
+    <section class="secao" aria-labelledby="titulo-futuro">
+      <h2 id="titulo-futuro">Visão futura</h2>
+      <p>Ideias para depois do protótipo. Nada disso existe nesta versão:</p>
+      <ul class="lista-simples">
+        <li>Geolocalização (GPS) para mostrar os lugares mais próximos.</li>
+        <li>Sensores acústicos em estabelecimentos parceiros.</li>
+        <li>Moderação comunitária das avaliações.</li>
+        <li>API aberta para prefeituras.</li>
+        <li>Mapa geográfico real, contas de usuário e um servidor (back-end) para guardar as avaliações.</li>
+      </ul>
+    </section>
+
+    <!-- 8. Privacidade e responsabilidade (8.5): LGPD, proteção do texto enviado e aviso de não ser ferramenta médica. -->
+    <section class="secao" aria-labelledby="titulo-privacidade">
+      <h2 id="titulo-privacidade">Privacidade e responsabilidade</h2>
+      <ul class="lista-simples">
+        <li><strong>Dados de saúde são sensíveis</strong> (<a href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm" target="_blank" rel="noopener noreferrer">LGPD, Art. 11<span class="visualmente-oculto"> (abre em nova aba)</span></a>). Por isso não há cadastro nem login, e não pedimos nome, CPF, e-mail ou diagnóstico. O perfil sensorial fica só na memória da página e some ao fechar.</li>
+        <li><strong>Só as preferências visuais ficam salvas</strong> no seu navegador: tamanho do texto, alto contraste e Modo Calmo.</li>
+        <li><strong>Proteção contra código malicioso (XSS):</strong> o texto enviado no formulário sempre aparece como texto simples, nunca como código.</li>
+        <li><strong>Avaliações enviadas ficam só nesta sessão</strong> e não são verificadas.</li>
+        <li><strong>Não é ferramenta médica:</strong> o Lugar Calmo apoia a escolha do dia a dia. Não substitui orientação profissional nem laudo técnico de acústica (ABNT NBR 10152).</li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- Rodapé idêntico nas 4 páginas: aviso fixo da RN14 e origem dos dados. -->
+  <footer class="rodape">
+    <p>Protótipo acadêmico. O Lugar Calmo apoia a escolha do dia a dia e não é ferramenta médica. Não substitui orientação profissional nem laudo técnico de acústica (ABNT NBR 10152).</p>
+    <p>Dados de locais fictícios para demonstração.</p>
+    <p><a href="equipe.html#fontes">Fontes</a></p>
+  </footer>
+</body>
+</html>

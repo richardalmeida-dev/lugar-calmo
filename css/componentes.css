@@ -1,0 +1,773 @@
+/* =====================================================================
+   componentes.css: peças reutilizáveis (botões, cartões, painel de
+   perfil, card de local, selos, etiquetas, formulário e avisos).
+   Inclui as classes que render.js e formulario.js vão gerar (8.4, K8),
+   já estilizadas antes de o JS existir.
+   Só var(--...), nenhuma cor fixa (K2): temas.css troca tudo pelas
+   variáveis. Sem transição nem animação (R10, RNF08).
+   ===================================================================== */
+
+/* ---------- Botões ---------- */
+
+/* Botão padrão: contorno na cor primária sobre fundo claro.
+   Contraste do texto acima de 4,5:1 (RNF01). */
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espaco-1);
+  padding: var(--espaco-2) var(--espaco-3);
+  border: 2px solid var(--cor-primaria);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+  color: var(--cor-primaria);
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+}
+button:hover {
+  text-decoration: underline;
+}
+
+/* Botão ligado (aria-pressed="true": Alto contraste, Modo Calmo e
+   perfis rápidos): fundo cheio e marca de check. O check garante que a
+   cor não é a única pista (RNF01) e continua visível no modo de cores
+   forçadas do sistema. O texto alternativo vazio ("/ ''") evita que o
+   leitor de tela leia o símbolo; a primeira linha é a reserva para
+   navegador que não entende essa sintaxe. */
+button[aria-pressed="true"] {
+  background: var(--cor-primaria);
+  color: var(--cor-primaria-texto);
+}
+button[aria-pressed="true"]::before {
+  content: "\2713";
+  content: "\2713" / "";
+}
+
+/* A-/A+ no extremo ficam disabled (RF14): borda tracejada e cor suave,
+   não só opacidade. */
+button:disabled {
+  border-style: dashed;
+  border-color: var(--cor-texto-suave);
+  color: var(--cor-texto-suave);
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+/* Ação principal (link "Abrir o Mapa Sensorial" e "Enviar avaliação"). */
+.btn-primario {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--toque-min);
+  padding: var(--espaco-2) var(--espaco-6);
+  border: 2px solid var(--cor-primaria);
+  border-radius: var(--raio);
+  background: var(--cor-primaria);
+  color: var(--cor-primaria-texto);
+  font-weight: 700;
+  text-decoration: none;
+}
+.btn-primario:hover {
+  text-decoration: underline;
+}
+
+/* Links soltos (fora de frase) ganham alvo de 44 px (RNF13). */
+.link-destaque,
+.rodape a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--toque-min);
+  font-weight: 700;
+}
+
+/* ---------- Cartões e textos de apoio ---------- */
+
+.cartao {
+  padding: var(--espaco-4);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+}
+.cartao > :last-child {
+  margin-bottom: 0;
+}
+.cartao ul {
+  padding-left: var(--espaco-6);
+}
+
+.introducao {
+  color: var(--cor-texto-suave);
+  font-size: 1.125rem;
+}
+
+.slogan {
+  color: var(--cor-primaria);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.proposta {
+  font-size: 1.125rem;
+}
+
+/* Observações curtas (nota metodológica, nota das personas). */
+.observacao {
+  color: var(--cor-texto-suave);
+  font-size: .9375rem;
+}
+
+/* Destaque do dado oficial (8.2, item 4): número grande e legível. */
+.numero-grande {
+  margin: 0;
+  color: var(--cor-primaria);
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.numero-legenda {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.passos li,
+.lista-simples li {
+  margin-bottom: var(--espaco-2);
+}
+
+/* Marca de conteúdo que a equipe ainda precisa preencher: fundo de aviso
+   e borda tracejada para ser achado de olho antes da entrega (8.6). */
+.pendente {
+  padding: 0 var(--espaco-1);
+  border: 2px dashed var(--selo-atencao-texto);
+  border-radius: var(--raio);
+  background: var(--selo-atencao-fundo);
+  color: var(--selo-atencao-texto);
+  font-weight: 700;
+}
+
+/* ---------- Tabela de ODS (impacto.html) ---------- */
+
+/* A tabela rola dentro da própria caixa em telas estreitas; a página
+   nunca rola para o lado (RNF02). A caixa recebe foco (tabindex no HTML)
+   para quem usa teclado também conseguir rolar. */
+.tabela-rolagem {
+  margin-bottom: var(--espaco-4);
+  overflow-x: auto;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+}
+
+.tabela-ods {
+  width: 100%;
+  min-width: 40rem;
+  border-collapse: collapse;
+}
+.tabela-ods caption {
+  padding: var(--espaco-3);
+  font-weight: 700;
+  text-align: left;
+}
+.tabela-ods th,
+.tabela-ods td {
+  padding: var(--espaco-2) var(--espaco-3);
+  border-top: 1px solid var(--cor-borda);
+  text-align: left;
+  vertical-align: top;
+}
+.tabela-ods thead th {
+  background: var(--cor-fundo);
+}
+
+/* ---------- Equipe ---------- */
+
+.dados-integrante {
+  margin: 0;
+}
+.dados-integrante div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco-2);
+}
+.dados-integrante dt {
+  font-weight: 700;
+}
+.dados-integrante dd {
+  margin: 0;
+}
+
+/* Linha do tempo das 4 etapas: linha vertical na cor primária. */
+.linha-do-tempo {
+  padding-left: var(--espaco-8);
+  border-left: 3px solid var(--cor-primaria);
+}
+.linha-do-tempo li {
+  margin-bottom: var(--espaco-4);
+}
+.linha-do-tempo li::marker {
+  color: var(--cor-primaria);
+  font-weight: 800;
+}
+.linha-do-tempo h3 {
+  margin-bottom: var(--espaco-1);
+}
+
+/* Endereços longos quebram em qualquer ponto para não estourar a tela. */
+.lista-fontes li {
+  margin-bottom: var(--espaco-3);
+}
+.lista-fontes a {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Painel de perfil (solucao.html, 8.3) ---------- */
+
+/* Painel compacto (11.3): espaçamentos curtos e título menor para o
+   painel inteiro caber na altura útil de 1366x768 e 1440x900. Os alvos
+   de 44 px não encolhem (RNF13). */
+#painel-perfil {
+  display: grid;
+  gap: var(--espaco-2);
+  padding: var(--espaco-4);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+}
+#painel-perfil h2,
+#painel-perfil p {
+  margin: 0;
+}
+#painel-perfil h2 {
+  font-size: 1.25rem;
+}
+
+.grupo-perfis {
+  display: grid;
+  gap: var(--espaco-1);
+}
+
+.rotulo-grupo {
+  font-weight: 700;
+}
+
+/* Perfis rápidos em grade de 3 colunas (8.3). O estado ligado vem da
+   regra button[aria-pressed="true"] (RF19). */
+.perfis-rapidos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--espaco-2);
+}
+.btn-perfil {
+  padding-inline: var(--espaco-1);
+}
+
+/* Cada slider: rótulo, legenda e valor numa linha só, slider embaixo. */
+.controle-linha {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--espaco-2);
+}
+.controle-linha label {
+  font-weight: 700;
+}
+.legenda {
+  flex: 1;
+  color: var(--cor-texto-suave);
+  font-size: .875rem;
+}
+/* Entrelinha 1.2: o número grande não aumenta a altura da linha. */
+.controle-linha output {
+  min-width: 1.5rem;
+  color: var(--cor-primaria);
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: right;
+}
+
+/* Turno: 3 rádios com visual de botão em grade de 3 colunas (8.3).
+   O rádio nativo fica escondido só da tela (continua focável e lido
+   pelo leitor de tela); o <label for> vira o botão de 44 px. */
+.seletor-turno {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-inline-size: 0;
+}
+.seletor-turno legend {
+  margin-bottom: var(--espaco-1);
+  padding: 0;
+  font-weight: 700;
+}
+
+.opcoes-turno {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--espaco-2);
+}
+
+.opcao-turno {
+  position: relative;
+}
+.opcao-turno input[type="radio"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.opcao-turno label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espaco-1);
+  min-height: var(--toque-min);
+  padding: var(--espaco-1);
+  border: 2px solid var(--cor-primaria);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+  color: var(--cor-primaria);
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+}
+
+/* Turno escolhido: fundo cheio + check (cor não é a única pista). */
+.opcao-turno input:checked + label {
+  background: var(--cor-primaria);
+  color: var(--cor-primaria-texto);
+}
+.opcao-turno input:checked + label::before {
+  content: "\2713";
+  content: "\2713" / "";
+}
+
+/* O foco está no rádio escondido; o contorno aparece no rótulo visível. */
+.opcao-turno input:focus-visible + label {
+  outline: 3px solid var(--cor-foco);
+  outline-offset: 2px;
+}
+
+#btn-restaurar {
+  width: 100%;
+}
+
+/* ---------- Avisos ---------- */
+
+/* Avisos (RN02 e "Fechado/Sem dados neste turno") usam as cores do selo
+   Atenção (K2) e uma barra lateral grossa, além da cor. */
+.aviso,
+.aviso-turno {
+  padding: var(--espaco-2) var(--espaco-3);
+  border-left: .375rem solid var(--selo-atencao-texto);
+  border-radius: var(--raio);
+  background: var(--selo-atencao-fundo);
+  color: var(--selo-atencao-texto);
+  font-weight: 600;
+}
+
+/* ---------- Resultados: filtros, resumo, estado vazio ---------- */
+
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--espaco-3) var(--espaco-6);
+  margin-bottom: var(--espaco-4);
+  padding: var(--espaco-3) var(--espaco-4);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+}
+.filtros .campo {
+  flex: 1 1 12rem;
+}
+
+/* Resumo dinâmico (RF18): em negrito para ser lido primeiro. */
+.resumo {
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+.resumo:empty {
+  margin: 0;
+}
+
+/* Limitação declarada (6.1): texto de apoio com barra lateral. */
+.nota-limitacao {
+  padding-left: var(--espaco-3);
+  border-left: .25rem solid var(--cor-borda);
+  color: var(--cor-texto-suave);
+  font-size: .9375rem;
+}
+
+.estado-vazio {
+  padding: var(--espaco-6) var(--espaco-4);
+  border: 2px dashed var(--cor-texto-suave);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+  font-weight: 600;
+  text-align: center;
+}
+
+/* ---------- Card de local (8.4, K8; gerado por render.js) ---------- */
+
+/* Fundo branco, borda fina, sem sombra pesada (11.1). */
+.card-local {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-3);
+  width: 100%;
+  padding: var(--espaco-4);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+}
+.card-local p,
+.card-local ul,
+.card-local dl {
+  margin: 0;
+}
+
+.card-topo {
+  display: grid;
+  gap: var(--espaco-1);
+}
+.card-topo h3 {
+  margin: 0;
+}
+
+.card-tipo {
+  color: var(--cor-texto-suave);
+  font-weight: 600;
+}
+
+.rotulo-origem {
+  color: var(--cor-texto-suave);
+  font-size: .875rem;
+  font-style: italic;
+}
+
+/* Selo (RF05): ícone + texto + cor. Borda na cor do texto reforça o
+   contorno em qualquer tema. */
+.selo {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: var(--espaco-2);
+  padding: var(--espaco-1) var(--espaco-3);
+  border: 2px solid currentColor;
+  border-radius: 999px;
+  font-weight: 800;
+}
+.selo img {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex: none;
+}
+
+.selo--tranquilo {
+  background: var(--selo-tranquilo-fundo);
+  color: var(--selo-tranquilo-texto);
+}
+.selo--atencao {
+  background: var(--selo-atencao-fundo);
+  color: var(--selo-atencao-texto);
+}
+.selo--evitar {
+  background: var(--selo-evitar-fundo);
+  color: var(--selo-evitar-texto);
+}
+
+/* Nota: número grande acima da barra do <meter> (estilo do meter em
+   base.css). */
+.nota {
+  display: grid;
+  gap: var(--espaco-1);
+}
+.nota-numero {
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.melhor-horario {
+  font-weight: 700;
+}
+
+/* Etiquetas de adaptação (RF08): ícone + texto, quebram linha. */
+.etiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco-2);
+  padding: 0;
+  list-style: none;
+}
+.etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espaco-1);
+  padding: var(--espaco-1) var(--espaco-2);
+  border: 1px solid var(--cor-primaria);
+  border-radius: var(--raio);
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  font-size: .9375rem;
+}
+.etiqueta img {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex: none;
+}
+
+/* Hora silenciosa não tem ícone (K8): a borda tracejada a diferencia. */
+.etiqueta--silenciosa {
+  border-style: dashed;
+}
+
+/* Hora silenciosa ativa no turno (RN06): mesma família de cor do selo
+   Tranquilo, com barra lateral. */
+.hora-silenciosa-ativa {
+  padding: var(--espaco-2) var(--espaco-3);
+  border-left: .375rem solid var(--selo-tranquilo-texto);
+  background: var(--selo-tranquilo-fundo);
+  color: var(--selo-tranquilo-texto);
+  font-weight: 700;
+}
+
+/* Estímulos efetivos: grupos <div><dt><dd> em grade que se adapta à
+   largura (e ao A+), sem estourar o card. */
+.estimulos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(9rem, 100%), 1fr));
+  gap: var(--espaco-1) var(--espaco-4);
+}
+.estimulos div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--espaco-2);
+  border-bottom: 1px solid var(--cor-borda);
+}
+.estimulos dt {
+  color: var(--cor-texto-suave);
+}
+.estimulos dd {
+  margin: 0;
+  font-weight: 700;
+}
+
+.relato {
+  font-style: italic;
+}
+
+.remetente {
+  color: var(--cor-texto-suave);
+  font-size: .9375rem;
+}
+
+/* Fechado ou sem dados no turno (RN07, RN16; K8: vale para 'fechado' e
+   'sem-dados'): fundo da página e borda tracejada. O texto continua com
+   contraste cheio; nada de opacidade. */
+.card-local--fechado {
+  border: 2px dashed var(--cor-texto-suave);
+  background: var(--cor-fundo);
+}
+
+/* Contribuição do usuário (12.2): borda primária mais grossa, sem
+   animação. Se também estiver sem dados no turno, a borda fica
+   tracejada para manter as duas pistas. */
+.card-local--novo {
+  border: 3px solid var(--cor-primaria);
+}
+.card-local--novo.card-local--fechado {
+  border-style: dashed;
+}
+
+/* ---------- Formulário "Avaliar ou sugerir um local" (seção 12) ---------- */
+
+.formulario {
+  display: grid;
+  gap: var(--espaco-4);
+  padding: var(--espaco-4);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+}
+.formulario p {
+  margin: 0;
+}
+.formulario button[type="submit"] {
+  justify-self: start;
+}
+
+/* Campo: rótulo em cima, controle embaixo, erro logo abaixo. */
+.campo {
+  display: grid;
+  gap: var(--espaco-1);
+  min-width: 0;
+}
+.campo label {
+  font-weight: 700;
+}
+
+/* Borda escura nos controles: contraste acima de 3:1 com o fundo,
+   exigido para componentes (RNF01). */
+input[type="text"],
+select,
+textarea {
+  width: 100%;
+  padding: var(--espaco-2) var(--espaco-3);
+  border: 2px solid var(--cor-texto-suave);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+  color: var(--cor-texto);
+}
+textarea {
+  min-height: 5.5rem;
+  resize: vertical;
+}
+
+/* min-inline-size: 0 tira a largura mínima padrão do fieldset, que
+   causaria rolagem horizontal em 320 px. */
+.formulario fieldset {
+  margin: 0;
+  padding: var(--espaco-3) var(--espaco-4) var(--espaco-4);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  min-inline-size: 0;
+}
+.formulario legend {
+  padding: 0 var(--espaco-1);
+  font-weight: 700;
+}
+
+/* Opções (rádios e caixas) lado a lado, quebrando linha quando faltar
+   espaço. */
+.opcoes-linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--espaco-6);
+}
+
+/* Os 4 níveis em grade que se adapta: 4 colunas no desktop, 2 ou 1 no
+   celular. */
+.grade-niveis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(8rem, 100%), 1fr));
+  gap: var(--espaco-3);
+}
+
+.contador {
+  color: var(--cor-texto-suave);
+  font-size: .875rem;
+}
+
+/* Dica de privacidade (12.1): visível e destacada, acima do botão. */
+.dica {
+  padding: var(--espaco-2) var(--espaco-3);
+  border-left: .25rem solid var(--cor-primaria);
+  background: var(--cor-fundo);
+  font-weight: 600;
+}
+
+/* Campo inválido (RF10, K5): borda grossa na cor de erro (K2), além do
+   marcador "!" na mensagem. Funciona com .campo--erro no próprio
+   controle, num contêiner (.campo, .opcao, fieldset) ou só com
+   aria-invalid, para não depender de onde o JS coloca a classe. */
+input.campo--erro,
+select.campo--erro,
+textarea.campo--erro,
+.campo--erro input[type="text"],
+.campo--erro select,
+.campo--erro textarea,
+input[type="text"][aria-invalid="true"],
+select[aria-invalid="true"],
+textarea[aria-invalid="true"] {
+  border-width: 3px;
+  border-color: var(--selo-evitar-texto);
+}
+
+/* Rádios e caixas inválidos: borda grossa no grupo do turno e barra
+   lateral na caixa de privacidade. :has() pega o aria-invalid que o JS
+   põe nesses controles. A barra fica só na caixa de seleção para não
+   repetir uma barra em cada rádio dentro do fieldset já marcado. */
+.formulario fieldset.campo--erro,
+.formulario fieldset:has(input[type="radio"][aria-invalid="true"]) {
+  border: 3px solid var(--selo-evitar-texto);
+}
+.opcao.campo--erro,
+.opcao:has(input[type="checkbox"][aria-invalid="true"]) {
+  padding-left: var(--espaco-2);
+  border-left: .375rem solid var(--selo-evitar-texto);
+}
+
+/* Mensagem de erro do campo: texto em negrito + círculo com "!" (não só
+   cor). O "/ ''" evita que o leitor de tela leia o "!" além da frase. */
+.erro-campo {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--espaco-2);
+  color: var(--selo-evitar-texto);
+  font-weight: 700;
+}
+.erro-campo::before {
+  content: "!";
+  content: "!" / "";
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: var(--selo-evitar-texto);
+  color: var(--cor-superficie);
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* Resumo de erros no topo do formulário (RF12): caixa com borda grossa
+   e links grandes para cada campo. */
+.resumo-erros {
+  padding: var(--espaco-3) var(--espaco-4);
+  border: 3px solid var(--selo-evitar-texto);
+  border-radius: var(--raio);
+  background: var(--selo-evitar-fundo);
+  color: var(--selo-evitar-texto);
+}
+.formulario .resumo-erros p {
+  margin-bottom: var(--espaco-2);
+  font-weight: 800;
+}
+.resumo-erros ul {
+  margin: 0;
+  padding-left: var(--espaco-6);
+}
+.resumo-erros a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--toque-min);
+  color: var(--selo-evitar-texto);
+  font-weight: 700;
+}
+
+/* Mensagem de sucesso (RF12): cores do selo Tranquilo (K2) e check.
+   Fica sempre no DOM para o leitor de tela anunciar; vazia, some (K5). */
+.mensagem-sucesso {
+  margin: 0;
+  padding: var(--espaco-3) var(--espaco-4);
+  border: 2px solid var(--selo-tranquilo-texto);
+  border-radius: var(--raio);
+  background: var(--selo-tranquilo-fundo);
+  color: var(--selo-tranquilo-texto);
+  font-weight: 700;
+}
+.mensagem-sucesso:not(:empty)::before {
+  content: "\2713  ";
+  content: "\2713  " / "";
+}
+.mensagem-sucesso:empty { padding: 0; border: 0; margin: 0; }

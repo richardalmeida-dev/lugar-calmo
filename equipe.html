@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Equipe e metodologia do Lugar Calmo: papéis técnicos, as 4 etapas CitizenTech, links do projeto e fontes oficiais.">
+  <title>Equipe | Lugar Calmo</title>
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <!-- Ordem fixa (8.1): base (variáveis) primeiro e temas por último, para que Modo Calmo e Alto Contraste sobrescrevam as variáveis. -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/componentes.css">
+  <link rel="stylesheet" href="css/temas.css">
+  <!-- R2: script com defer e sem módulos, para abrir por duplo clique (file://). Aplica as preferências salvas (RF20). -->
+  <script src="js/acessibilidade.js" defer></script>
+</head>
+<body>
+  <!-- Atalho de teclado: pula o cabeçalho e vai direto ao conteúdo. -->
+  <a class="pular-conteudo" href="#conteudo">Ir para o conteúdo</a>
+
+  <!-- Cabeçalho idêntico nas 4 páginas (RF16); só o aria-current muda. -->
+  <header class="cabecalho">
+    <a class="marca" href="index.html"><img src="img/favicon.svg" alt="" width="32" height="32"> Lugar Calmo</a>
+    <!-- Menu horizontal com 4 links, sempre visível, sem hambúrguer (R11). -->
+    <nav aria-label="Navegação principal">
+      <ul class="menu">
+        <li><a href="index.html">Início</a></li>
+        <li><a href="solucao.html">Solução</a></li>
+        <li><a href="impacto.html">Impacto</a></li>
+        <li><a href="equipe.html" aria-current="page">Equipe</a></li>
+      </ul>
+    </nav>
+    <!-- Barra de acessibilidade (M5). O comportamento fica em js/acessibilidade.js (RF13, RF14, RF15). -->
+    <div class="barra-acessibilidade" role="group" aria-label="Preferências de leitura">
+      <button type="button" id="btn-fonte-menos" aria-label="Diminuir tamanho do texto">A-</button>
+      <button type="button" id="btn-fonte-mais" aria-label="Aumentar tamanho do texto">A+</button>
+      <button type="button" id="btn-contraste" aria-pressed="false">Alto contraste</button>
+      <button type="button" id="btn-modo-calmo" aria-pressed="false">Modo Calmo</button>
+    </div>
+  </header>
+
+  <!-- tabindex="-1" deixa o link "Ir para o conteúdo" mover o foco para cá. -->
+  <main id="conteudo" tabindex="-1">
+    <h1>Equipe e metodologia</h1>
+    <p class="introducao">Quem fez o Lugar Calmo, como o trabalho foi organizado e de onde vêm os dados.</p>
+
+    <!-- 1. Papéis técnicos: 5 cartões com nome e RM a preencher pela equipe (8.6). -->
+    <section class="secao" aria-labelledby="titulo-papeis">
+      <h2 id="titulo-papeis">Papéis técnicos</h2>
+      <ul class="grade-cartoes">
+        <li class="cartao">
+          <h3>Papel 1: Lógica JavaScript Core</h3>
+          <p>Dados dos locais, cálculo da nota de compatibilidade e controle do Mapa Sensorial: <code>dados.js</code>, <code>calculo.js</code> e <code>app.js</code>.</p>
+          <dl class="dados-integrante">
+            <div><dt>Nome:</dt><dd><span class="pendente">[PREENCHER]</span></dd></div>
+            <div><dt>RM:</dt><dd><span class="pendente">[PREENCHER]</span></dd></div>
+          </dl>
+        </li>
+        <li class="cartao">
+          <h3>Papel 2: Renderização Dinâmica e Formulário</h3>
+          <p>Cards dos locais montados com segurança e formulário com validação na própria página: <code>render.js</code> e <code>formulario.js</code>.</p>
+          <dl class="dados-integrante">
+            <div><dt>Nome:</dt><dd><span class="pendente">[PREENCHER]</span></dd></div>
+            <div><dt>RM:</dt><dd><span class="pendente">[PREENCHER]</span></dd></div>
+          </dl>
+        </li>
+        <li class="cartao">
+          <h3>Papel 3: HTML5 Semântico e CSS3 Responsivo</h3>
+          <p>As 4 páginas e o visual responsivo: <code>base.css</code>, <code>layout.css</code> e <code>componentes.css</code>.</p>
+          <dl class="dados-integrante">
+            <div><dt>Nome:</dt><dd><span class="pendente">[PREENCHER]</span></dd></div>
+            <div><dt>RM:</dt><dd><span class="pendente">[PREENCHER]</span></dd></div>
+          </dl>
+        </li>
+        <li class="cartao">
+          <h3>Papel 4: Acessibilidade e QA</h3>
+          <p>Modo Calmo, Alto Contraste, tamanho do texto e testes T-01 a T-99: <code>temas.css</code> e <code>acessibilidade.js</code>.</p>
+          <dl class="dados-integrante">
+            <div><dt>Nome:</dt><dd><span class="pendente">[PREENCHER]</span></dd></div>
+            <div><dt>RM:</dt><dd><span class="pendente">[PREENCHER]</span></dd></div>
+          </dl>
+        </li>
+        <li class="cartao">
+          <h3>Papel 5: Pesquisa Social, Validação e Entrega</h3>
+          <p>Textos, fontes, escuta com pessoas reais, README, PDF, ZIP e vídeo.</p>
+          <dl class="dados-integrante">
+            <div><dt>Nome:</dt><dd><span class="pendente">[PREENCHER]</span></dd></div>
+            <div><dt>RM:</dt><dd><span class="pendente">[PREENCHER]</span></dd></div>
+          </dl>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 2. As 4 etapas CitizenTech em linha do tempo. Texto da Parte 1.1 do documento mestre ainda a conferir (K9). -->
+    <section class="secao" aria-labelledby="titulo-etapas">
+      <h2 id="titulo-etapas">As 4 etapas CitizenTech</h2>
+      <ol class="linha-do-tempo">
+        <li>
+          <h3>Observar o Território</h3>
+          <p>Olhar a cidade e achar as barreiras sensoriais invisíveis, como som alto, eco, luz forte, lotação e cheiros, em lugares do dia a dia: UBS, mercados, bibliotecas, parques e terminais.</p>
+        </li>
+        <li>
+          <h3>Escutar Quem Convive</h3>
+          <p>Ouvir pessoas autistas, familiares, cuidadores e comerciantes, seguindo o protocolo de validação descrito na página Impacto.</p>
+        </li>
+        <li>
+          <h3>Prototipar e Testar</h3>
+          <p>Construir o Mapa Sensorial, com perfil, turnos, nota de 0 a 100 e Modo Calmo, e testar o cálculo e a acessibilidade.</p>
+        </li>
+        <li>
+          <h3>Demonstrar o Impacto</h3>
+          <p>Mostrar o que o protótipo já prova, o que depende de implantação real e o plano de ampliação.</p>
+        </li>
+      </ol>
+      <p><span class="pendente">[PREENCHER: conferir com a Parte 1.1 do documento mestre]</span></p>
+    </section>
+
+    <!-- 3. Links do projeto, a preencher pela equipe antes da entrega (8.6). -->
+    <section class="secao" aria-labelledby="titulo-links">
+      <h2 id="titulo-links">Links do projeto</h2>
+      <ul class="lista-simples">
+        <li>Repositório no GitHub: <span class="pendente">[PREENCHER URL]</span></li>
+        <li>Site publicado (GitHub Pages): <span class="pendente">[PREENCHER URL]</span></li>
+        <li>Vídeo pitch: <span class="pendente">[PREENCHER URL]</span></li>
+      </ul>
+    </section>
+
+    <!-- 4. Fontes (1.2): todo dado do site aponta para cá pelo link "Fontes" do rodapé. Nenhum dado sem fonte aberta. -->
+    <section class="secao" id="fontes" aria-labelledby="titulo-fontes">
+      <h2 id="titulo-fontes">Fontes</h2>
+      <p>Dados conferidos em 16/11/2026. Os links abrem em nova aba.</p>
+      <ul class="lista-fontes">
+        <li><a href="https://agenciadenoticias.ibge.gov.br/agencia-noticias/2012-agencia-de-noticias/noticias/43464-censo-2022-identifica-2-4-milhoes-de-pessoas-diagnosticadas-com-autismo-no-brasil" target="_blank" rel="noopener noreferrer">IBGE, Agência de Notícias (23/05/2025): Censo 2022 identifica 2,4 milhões de pessoas diagnosticadas com autismo no Brasil<span class="visualmente-oculto"> (abre em nova aba)</span></a>. Base dos números de 2,4 milhões (1,2% da população), da faixa de 5 a 9 anos (2,6%) e da nota sobre os 14,4 milhões de pessoas com deficiência.</li>
+        <li><a href="https://www.who.int/news-room/fact-sheets/detail/autism-spectrum-disorders" target="_blank" rel="noopener noreferrer">OMS: Autism fact sheet, em inglês<span class="visualmente-oculto"> (abre em nova aba)</span></a>. Cerca de 1 em cada 100 crianças no espectro autista no mundo.</li>
+        <li><a href="https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2012/lei/l12764.htm" target="_blank" rel="noopener noreferrer">Lei 12.764/2012 (Lei Berenice Piana)<span class="visualmente-oculto"> (abre em nova aba)</span></a>. A pessoa autista é pessoa com deficiência para todos os efeitos legais.</li>
+        <li><a href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13146.htm" target="_blank" rel="noopener noreferrer">Lei 13.146/2015 (Lei Brasileira de Inclusão)<span class="visualmente-oculto"> (abre em nova aba)</span></a>. Direito à acessibilidade e à eliminação de barreiras.</li>
+        <li><a href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm" target="_blank" rel="noopener noreferrer">Lei 13.709/2018 (LGPD), Art. 11<span class="visualmente-oculto"> (abre em nova aba)</span></a>. Dados de saúde são dados pessoais sensíveis.</li>
+        <li><a href="https://brasil.un.org/pt-br/sdgs" target="_blank" rel="noopener noreferrer">Nações Unidas Brasil: Objetivos de Desenvolvimento Sustentável<span class="visualmente-oculto"> (abre em nova aba)</span></a>. ODS 10, 11, 3 e 4.</li>
+      </ul>
+      <p>Os 12 locais do Mapa Sensorial são fictícios, criados só para demonstração.</p>
+    </section>
+
+  </main>
+
+  <!-- Rodapé idêntico nas 4 páginas: aviso fixo da RN14 e origem dos dados. -->
+  <footer class="rodape">
+    <p>Protótipo acadêmico. O Lugar Calmo apoia a escolha do dia a dia e não é ferramenta médica. Não substitui orientação profissional nem laudo técnico de acústica (ABNT NBR 10152).</p>
+    <p>Dados de locais fictícios para demonstração.</p>
+    <p><a href="equipe.html#fontes">Fontes</a></p>
+  </footer>
+</body>
+</html>

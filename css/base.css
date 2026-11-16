@@ -1,0 +1,258 @@
+/* =====================================================================
+   base.css: tokens de design, reset leve e regras globais.
+   Papel 3 (HTML5 Semântico e CSS3 Responsivo).
+   Por quê: todas as cores e medidas vivem aqui como variáveis. Assim
+   temas.css (Modo Calmo e Alto Contraste) muda o site inteiro só
+   sobrescrevendo variáveis, sem repetir regras (PRD 11.1 e 11.2, K2).
+   ===================================================================== */
+
+/* Tokens da seção 11.1. Nenhum outro arquivo define cor fixa (K2). */
+:root {
+  --cor-fundo: #F6F2EA;
+  --cor-superficie: #FFFFFF;
+  --cor-borda: #D6D0C4;
+  --cor-texto: #1F2A37;
+  --cor-texto-suave: #4B5563;
+  --cor-primaria: #1F5F5B;
+  --cor-primaria-texto: #FFFFFF;
+  --cor-foco: #1F5F5B;
+  --selo-tranquilo-fundo: #DDEFE3; --selo-tranquilo-texto: #14532D;
+  --selo-atencao-fundo: #FFF1CC;   --selo-atencao-texto: #7A4B00;
+  --selo-evitar-fundo: #FBE3E1;    --selo-evitar-texto: #8A1C1C;
+  --fonte-base: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --raio: 8px;
+  --espaco-1: .25rem; --espaco-2: .5rem; --espaco-3: .75rem; --espaco-4: 1rem; --espaco-6: 1.5rem; --espaco-8: 2rem;
+  --toque-min: 44px;
+  --largura-texto: 70ch;
+}
+
+/* Largura inclui borda e padding: evita estouro lateral em 320 px (RNF02). */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Escala de fonte. Todo o resto do site usa rem, então trocar a classe
+   do <html> aumenta ou diminui tudo junto (RF14, 5 níveis). */
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+.fonte-0 { font-size: 87.5%; }
+.fonte-1 { font-size: 100%; }
+.fonte-2 { font-size: 112.5%; }
+.fonte-3 { font-size: 125%; }
+.fonte-4 { font-size: 137.5%; }
+
+/* Fonte do sistema (RNF09: zero requisição externa) e entrelinha folgada
+   para leitura confortável (persona Dona Marta). overflow-wrap quebra
+   palavras longas em vez de criar rolagem horizontal (RNF02). */
+body {
+  margin: 0;
+  font-family: var(--fonte-base);
+  line-height: 1.6;
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  overflow-wrap: break-word;
+}
+
+/* O JS mostra e esconde avisos com o atributo hidden (R4). Como vários
+   componentes definem display próprio (flex, grid), esta regra garante
+   que hidden sempre vence. */
+[hidden] {
+  display: none !important;
+}
+
+/* Hierarquia de títulos clara e espaçamento previsível. */
+h1,
+h2,
+h3,
+h4 {
+  margin: 0 0 var(--espaco-3);
+  line-height: 1.25;
+}
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.25rem; }
+h4 { font-size: 1.125rem; }
+
+p,
+ul,
+ol,
+dl {
+  margin: 0 0 var(--espaco-4);
+}
+
+/* Imagens (todas SVG, RNF09) nunca passam da largura do contêiner. */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Links sublinhados: a cor não é a única pista de que é link (RNF01). */
+a {
+  color: var(--cor-primaria);
+  text-underline-offset: .15em;
+}
+a:hover {
+  text-decoration-thickness: 3px;
+}
+
+/* RNF01: foco visível com contorno de 3 px em todo elemento focável. */
+:focus-visible {
+  outline: 3px solid var(--cor-foco);
+  outline-offset: 2px;
+}
+
+/* Esconde da tela, mas mantém para leitor de tela (técnica padrão de clip).
+   Usado, por exemplo, em "(abre em nova aba)" e no rótulo da nota. */
+.visualmente-oculto {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Link "Ir para o conteúdo": fica fora da tela e só aparece ao receber
+   foco pelo teclado, sem animação (R10). */
+.pular-conteudo {
+  position: absolute;
+  top: -10rem;
+  left: var(--espaco-2);
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--toque-min);
+  padding: var(--espaco-2) var(--espaco-4);
+  border-radius: var(--raio);
+  background: var(--cor-primaria);
+  color: var(--cor-primaria-texto);
+  font-weight: 700;
+}
+.pular-conteudo:focus {
+  top: var(--espaco-2);
+}
+
+/* ---------------------------------------------------------------------
+   RNF13: alvo de toque mínimo de 44 px em botões, links do menu,
+   campos, rádios e caixas de seleção.
+   --------------------------------------------------------------------- */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  min-width: var(--toque-min);
+  min-height: var(--toque-min);
+  cursor: pointer;
+}
+
+select,
+input[type="text"] {
+  min-height: var(--toque-min);
+}
+
+.menu a {
+  min-height: var(--toque-min);
+}
+
+/* Rádio e caixa de seleção: 24 px na própria caixa; o alvo de 44 px é o
+   conjunto caixa + rótulo (.opcao), porque o <label for> também marca. */
+input[type="checkbox"],
+input[type="radio"] {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0;
+  flex: none;
+  accent-color: var(--cor-primaria);
+  cursor: pointer;
+}
+
+.opcao {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-2);
+  min-height: var(--toque-min);
+}
+.opcao label {
+  padding-block: var(--espaco-2);
+  cursor: pointer;
+}
+
+/* Sliders: cor da marca e altura de 44 px para facilitar o toque (11.1). */
+input[type="range"] {
+  display: block;
+  width: 100%;
+  min-height: var(--toque-min);
+  margin: 0;
+  accent-color: var(--cor-primaria);
+  cursor: pointer;
+}
+
+/* ---------------------------------------------------------------------
+   <meter> da nota (11.1). A cor vem da classe do selo, não da faixa
+   low/high do navegador, para bater sempre com o selo em texto. Se o
+   navegador ignorar estes pseudo-elementos, o número e o selo
+   continuam carregando a informação (cor nunca é a única pista).
+   --------------------------------------------------------------------- */
+meter {
+  display: block;
+  width: 100%;
+  height: 12px;
+}
+
+/* Chrome, Edge e Safari: trilho e barra por pseudo-elemento. Não usamos
+   appearance: none aqui porque, segundo o MDN, isso quebra o desenho
+   do meter no Chrome. */
+meter::-webkit-meter-bar {
+  height: 12px;
+  border: 1px solid var(--cor-texto-suave);
+  border-radius: var(--raio);
+  background: var(--cor-fundo);
+}
+
+.meter--tranquilo::-webkit-meter-optimum-value,
+.meter--tranquilo::-webkit-meter-suboptimum-value,
+.meter--tranquilo::-webkit-meter-even-less-good-value {
+  background: var(--selo-tranquilo-texto);
+}
+
+.meter--atencao::-webkit-meter-optimum-value,
+.meter--atencao::-webkit-meter-suboptimum-value,
+.meter--atencao::-webkit-meter-even-less-good-value {
+  background: var(--selo-atencao-texto);
+}
+
+.meter--evitar::-webkit-meter-optimum-value,
+.meter--evitar::-webkit-meter-suboptimum-value,
+.meter--evitar::-webkit-meter-even-less-good-value {
+  background: var(--selo-evitar-texto);
+}
+
+/* Firefox: precisa de appearance: none para aceitar ::-moz-meter-bar.
+   O @supports com a forma -moz- isola a regra no Firefox e não quebra
+   o Chrome. */
+@supports (-moz-appearance: none) {
+  meter {
+    -moz-appearance: none;
+    border: 1px solid var(--cor-texto-suave);
+    border-radius: var(--raio);
+    background: var(--cor-fundo);
+  }
+
+  .meter--tranquilo::-moz-meter-bar { background: var(--selo-tranquilo-texto); }
+  .meter--atencao::-moz-meter-bar { background: var(--selo-atencao-texto); }
+  .meter--evitar::-moz-meter-bar { background: var(--selo-evitar-texto); }
+}

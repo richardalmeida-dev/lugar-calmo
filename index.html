@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Lugar Calmo: veja como estão o barulho, a luz, a lotação e os cheiros de lugares da cidade em cada turno, com uma nota para o seu perfil sensorial.">
+  <title>Início | Lugar Calmo</title>
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <!-- Ordem fixa (8.1): base (variáveis) primeiro e temas por último, para que Modo Calmo e Alto Contraste sobrescrevam as variáveis. -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/componentes.css">
+  <link rel="stylesheet" href="css/temas.css">
+  <!-- R2: script com defer e sem módulos, para abrir por duplo clique (file://). Aplica as preferências salvas (RF20). -->
+  <script src="js/acessibilidade.js" defer></script>
+</head>
+<body>
+  <!-- Atalho de teclado: pula o cabeçalho e vai direto ao conteúdo. -->
+  <a class="pular-conteudo" href="#conteudo">Ir para o conteúdo</a>
+
+  <!-- Cabeçalho idêntico nas 4 páginas (RF16); só o aria-current muda. -->
+  <header class="cabecalho">
+    <a class="marca" href="index.html"><img src="img/favicon.svg" alt="" width="32" height="32"> Lugar Calmo</a>
+    <!-- Menu horizontal com 4 links, sempre visível, sem hambúrguer (R11). -->
+    <nav aria-label="Navegação principal">
+      <ul class="menu">
+        <li><a href="index.html" aria-current="page">Início</a></li>
+        <li><a href="solucao.html">Solução</a></li>
+        <li><a href="impacto.html">Impacto</a></li>
+        <li><a href="equipe.html">Equipe</a></li>
+      </ul>
+    </nav>
+    <!-- Barra de acessibilidade (M5). O comportamento fica em js/acessibilidade.js (RF13, RF14, RF15). -->
+    <div class="barra-acessibilidade" role="group" aria-label="Preferências de leitura">
+      <button type="button" id="btn-fonte-menos" aria-label="Diminuir tamanho do texto">A-</button>
+      <button type="button" id="btn-fonte-mais" aria-label="Aumentar tamanho do texto">A+</button>
+      <button type="button" id="btn-contraste" aria-pressed="false">Alto contraste</button>
+      <button type="button" id="btn-modo-calmo" aria-pressed="false">Modo Calmo</button>
+    </div>
+  </header>
+
+  <!-- tabindex="-1" deixa o link "Ir para o conteúdo" mover o foco para cá. -->
+  <main id="conteudo" tabindex="-1">
+
+    <!-- 1. Hero (RF17): nome, slogan, proposta de valor e acesso ao mapa. -->
+    <section class="hero" aria-labelledby="titulo-inicio">
+      <div>
+        <h1 id="titulo-inicio">Lugar Calmo: mapa sensorial da cidade</h1>
+        <p class="slogan">Acessibilidade também é silêncio. A rampa chegou. Mas e o barulho?</p>
+        <p class="proposta">Previsibilidade sensorial para circular pela cidade com liberdade e tranquilidade.</p>
+        <p>Antes de sair de casa, veja como estão o barulho, a luz, a lotação e os cheiros de cada lugar, de manhã, à tarde e à noite.</p>
+        <p><a class="btn-primario" href="solucao.html">Abrir o Mapa Sensorial</a></p>
+      </div>
+      <!-- Ilustração só decorativa: alt vazio; o Modo Calmo a esconde (classe .decorativo). -->
+      <img class="decorativo hero-imagem" src="img/aneis-hero.svg" alt="" width="240" height="240">
+    </section>
+
+    <!-- 2. O problema: barreiras sensoriais que ninguém vê. -->
+    <section class="secao" aria-labelledby="titulo-problema">
+      <h2 id="titulo-problema">O problema</h2>
+      <p>Algumas barreiras da cidade são invisíveis: som alto, eco, luz fluorescente, aglomeração e cheiro forte.</p>
+      <p>Esses estímulos podem causar sobrecarga, exaustão e exclusão.</p>
+      <p>A acessibilidade urbana costuma olhar só para rampa, elevador e piso tátil. Ainda falta informação sobre como cada lugar soa, brilha e cheira em cada horário.</p>
+      <p>A lei garante esse direito. A <a href="https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2012/lei/l12764.htm" target="_blank" rel="noopener noreferrer">Lei 12.764/2012<span class="visualmente-oculto"> (abre em nova aba)</span></a> reconhece a pessoa autista como pessoa com deficiência. A <a href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13146.htm" target="_blank" rel="noopener noreferrer">Lei Brasileira de Inclusão (Lei 13.146/2015)<span class="visualmente-oculto"> (abre em nova aba)</span></a> garante acessibilidade e a eliminação de barreiras.</p>
+    </section>
+
+    <!-- 3. Quem é beneficiado, com as personas e a nota obrigatória (1.1, K9). -->
+    <section class="secao" aria-labelledby="titulo-beneficiados">
+      <h2 id="titulo-beneficiados">Quem é beneficiado</h2>
+      <ul class="lista-simples">
+        <li>Pessoas autistas.</li>
+        <li>Pessoas neurodivergentes ou com sensibilidade sensorial, como quem tem TDAH, hipersensibilidade sensorial, ansiedade ou enxaqueca.</li>
+        <li>Famílias e cuidadores, que planejam a saída junto.</li>
+      </ul>
+
+      <h3>Personas que guiam o projeto</h3>
+      <ul class="grade-cartoes">
+        <li class="cartao">
+          <p><strong>Ana, 34 anos.</strong> Mãe de Pedro, de 7 anos, autista e muito sensível a barulho e a multidões. Usa transporte público para ir ao mercado e à UBS.</p>
+        </li>
+        <li class="cartao">
+          <p><strong>Rafael, 26 anos.</strong> Adulto autista, trabalha em casa. Luz forte, multidões e cheiros o incomodam. Procura bibliotecas, parques e cafés tranquilos.</p>
+        </li>
+        <li class="cartao">
+          <p><strong>Dona Marta, 62 anos.</strong> Avó e cuidadora de Davi, de 7 anos. Tem pouca familiaridade com celular e internet. Por causa dela, o site tem frases curtas, letra ajustável e botões grandes.</p>
+        </li>
+      </ul>
+      <p>No Mapa Sensorial, os botões "Perfil Ana" e "Perfil Rafael" mostram exemplos de ajuste.</p>
+      <p class="observacao">As personas são construções hipotéticas para orientar o design; não representam pessoas entrevistadas.</p>
+    </section>
+
+    <!-- 4. O dado oficial, sempre com fonte clicável (RF17, 1.2). -->
+    <section class="secao" aria-labelledby="titulo-dado">
+      <h2 id="titulo-dado">O dado</h2>
+      <p class="numero-grande">2,4 milhões</p>
+      <p class="numero-legenda">pessoas diagnosticadas com autismo no Brasil (1,2% da população)</p>
+      <p>Na faixa de 5 a 9 anos, 2,6%: cerca de 1 em cada 38 crianças.</p>
+      <p class="observacao">Nota: o Censo investiga o diagnóstico declarado por profissional de saúde. Os 14,4 milhões (7,3%) de pessoas com deficiência são outro recorte; os dois números não devem ser somados.</p>
+      <p><a class="link-destaque" href="https://agenciadenoticias.ibge.gov.br/agencia-noticias/2012-agencia-de-noticias/noticias/43464-censo-2022-identifica-2-4-milhoes-de-pessoas-diagnosticadas-com-autismo-no-brasil" target="_blank" rel="noopener noreferrer">Fonte: IBGE, Censo 2022<span class="visualmente-oculto"> (abre em nova aba)</span></a></p>
+      <p>No mundo, cerca de 1 em cada 100 crianças está no espectro autista. <a href="https://www.who.int/news-room/fact-sheets/detail/autism-spectrum-disorders" target="_blank" rel="noopener noreferrer">Fonte: OMS, em inglês<span class="visualmente-oculto"> (abre em nova aba)</span></a></p>
+    </section>
+
+    <!-- 5. Como funciona: 3 passos em lista ordenada (8.2). -->
+    <section class="secao" aria-labelledby="titulo-como-funciona">
+      <h2 id="titulo-como-funciona">Como funciona</h2>
+      <p>O Lugar Calmo responde a uma pergunta: "Como meus sentidos vão se sentir dentro deste lugar neste horário?"</p>
+      <ol class="passos">
+        <li><strong>Ajuste suas 4 sensibilidades:</strong> o quanto ruído, iluminação, lotação e cheiros incomodam você, de 0 (nada) a 5 (muito).</li>
+        <li><strong>Escolha o turno:</strong> manhã, tarde ou noite.</li>
+        <li><strong>Veja os lugares do mais ao menos compatível:</strong> cada um tem nota de 0 a 100, selo (Tranquilo, Atenção ou Evitar neste horário) e o melhor horário para ir.</li>
+      </ol>
+      <p>Seu perfil fica só nesta página. Não pedimos cadastro, nome nem diagnóstico.</p>
+    </section>
+
+    <!-- 6. ODS: 10 e 11 como principais, 3 e 4 como complementares (8.2). -->
+    <section class="secao" aria-labelledby="titulo-ods">
+      <h2 id="titulo-ods">Objetivos de Desenvolvimento Sustentável (ODS)</h2>
+      <p>O projeto ajuda a cumprir metas da ONU para 2030.</p>
+
+      <h3>Principais</h3>
+      <ul class="grade-cartoes">
+        <li class="cartao">
+          <h4>ODS 10: Redução das desigualdades</h4>
+          <p><strong>Meta 10.2:</strong> incluir todas as pessoas na vida social, econômica e política, inclusive as pessoas com deficiência.</p>
+        </li>
+        <li class="cartao">
+          <h4>ODS 11: Cidades e comunidades sustentáveis</h4>
+          <p><strong>Meta 11.7:</strong> espaços públicos seguros, inclusivos e acessíveis para todos, inclusive para pessoas com deficiência.</p>
+        </li>
+      </ul>
+
+      <h3>Complementares</h3>
+      <ul class="grade-cartoes">
+        <li class="cartao">
+          <h4>ODS 3: Saúde e bem-estar</h4>
+          <p><strong>Meta 3.4:</strong> promover a saúde mental e o bem-estar.</p>
+        </li>
+        <li class="cartao">
+          <h4>ODS 4: Educação de qualidade</h4>
+          <p><strong>Meta 4.5:</strong> igualdade de acesso à educação, inclusive para pessoas com deficiência.</p>
+        </li>
+      </ul>
+      <p><a href="https://brasil.un.org/pt-br/sdgs" target="_blank" rel="noopener noreferrer">Fonte: Nações Unidas Brasil<span class="visualmente-oculto"> (abre em nova aba)</span></a></p>
+      <p><a class="link-destaque" href="impacto.html">Ver impacto</a></p>
+    </section>
+  </main>
+
+  <!-- Rodapé idêntico nas 4 páginas: aviso fixo da RN14 e origem dos dados. -->
+  <footer class="rodape">
+    <p>Protótipo acadêmico. O Lugar Calmo apoia a escolha do dia a dia e não é ferramenta médica. Não substitui orientação profissional nem laudo técnico de acústica (ABNT NBR 10152).</p>
+    <p>Dados de locais fictícios para demonstração.</p>
+    <p><a href="equipe.html#fontes">Fontes</a></p>
+  </footer>
+</body>
+</html>
