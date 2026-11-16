@@ -30,10 +30,11 @@
         <li><a href="equipe.html" aria-current="page">Equipe</a></li>
       </ul>
     </nav>
-    <!-- Barra de acessibilidade (M5). O comportamento fica em js/acessibilidade.js (RF13, RF14, RF15). -->
+    <!-- Barra de acessibilidade (M5). O comportamento fica em js/acessibilidade.js (RF13, RF14, RF15).
+         O aria-label de A-/A+ começa pelo texto visível para cumprir o WCAG 2.5.3 (Rótulo no Nome, RNF01). -->
     <div class="barra-acessibilidade" role="group" aria-label="Preferências de leitura">
-      <button type="button" id="btn-fonte-menos" aria-label="Diminuir tamanho do texto">A-</button>
-      <button type="button" id="btn-fonte-mais" aria-label="Aumentar tamanho do texto">A+</button>
+      <button type="button" id="btn-fonte-menos" aria-label="A-: diminuir tamanho do texto">A-</button>
+      <button type="button" id="btn-fonte-mais" aria-label="A+: aumentar tamanho do texto">A+</button>
       <button type="button" id="btn-contraste" aria-pressed="false">Alto contraste</button>
       <button type="button" id="btn-modo-calmo" aria-pressed="false">Modo Calmo</button>
     </div>
