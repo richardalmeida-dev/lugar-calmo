@@ -44,7 +44,7 @@ HTML5 semântico, CSS3 e JavaScript puro. Sem frameworks, bibliotecas, CDNs ou f
 
 Baixe ou extraia a pasta e dê dois cliques em `index.html`. Não precisa de instalação nem servidor.
 
-Site publicado (GitHub Pages): [PREENCHER URL]
+Site publicado (GitHub Pages): https://richardalmeida-dev.github.io/lugar-calmo/
 
 ## Estrutura de pastas
 
@@ -95,18 +95,18 @@ lugar-calmo/
 
 ## Integrantes
 
-| Nome completo | RM | Papel |
+| Nome completo | RM | Responsabilidade |
 |---|---|---|
-| [PREENCHER] | [PREENCHER] | Papel 1, Lógica JavaScript Core |
-| [PREENCHER] | [PREENCHER] | Papel 2, Renderização Dinâmica e Formulário |
-| [PREENCHER] | [PREENCHER] | Papel 3, HTML5 Semântico e CSS3 Responsivo |
-| [PREENCHER] | [PREENCHER] | Papel 4, Acessibilidade e QA |
-| [PREENCHER] | [PREENCHER] | Papel 5, Pesquisa Social, Validação e Entrega |
+| Francisco Wellington da Silva Rodrigues | RM566700 | Concepção da solução e entrevistas |
+| Richard Henrique Godoy de Almeida | RM574660 | Código e vídeo |
+| Alexandre Oliveira Machado | RM575671 | Testes |
+| Luiza Eduarda Luza Neckel | RM576827 | Documentação e envio |
+| Paulo Henrique Oliveira Freitas | RM574796 | Integrante |
 
 ## Links
 
-- Site publicado (GitHub Pages): [PREENCHER URL]
-- Repositório no GitHub: [PREENCHER URL]
+- Site publicado (GitHub Pages): https://richardalmeida-dev.github.io/lugar-calmo/
+- Repositório no GitHub: https://github.com/richardalmeida-dev/lugar-calmo
 - Vídeo pitch: [PREENCHER URL]
 
 ## Fontes
