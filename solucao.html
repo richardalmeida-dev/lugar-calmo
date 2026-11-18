@@ -61,6 +61,9 @@
       <!-- Painel de perfil (M1, 8.3). Sticky no desktop para ficar à vista enquanto a lista rola. -->
       <aside id="painel-perfil" aria-labelledby="titulo-perfil">
         <h2 id="titulo-perfil">Seu perfil sensorial</h2>
+        <!-- Versão 2 (pedido da entrevista P4): os controles medem o SEU incômodo, não o barulho do lugar.
+             Uma legenda só, ligada aos 4 sliders, explica a escala e economiza altura no painel. -->
+        <p class="escala-perfil" id="escala-perfil">Escala: 0 = tolero bem, 5 = incomoda muito.</p>
 
         <!-- Perfis rápidos (RF19): app.js troca o aria-pressed do botão ativo. -->
         <div class="grupo-perfis">
@@ -78,38 +81,34 @@
              sem isso o leitor de tela repetiria o número a cada passo (sobrecarga sensorial, R10). -->
         <div class="controle-sensibilidade">
           <div class="controle-linha">
-            <label for="sens-ruido">Ruído</label>
-            <span class="legenda" id="leg-ruido">0 nada, 5 muito</span>
+            <label for="sens-ruido">Seu incômodo com ruído</label>
             <output id="valor-ruido" for="sens-ruido" aria-live="off">3</output>
           </div>
-          <input type="range" id="sens-ruido" min="0" max="5" step="1" value="3" aria-describedby="leg-ruido">
+          <input type="range" id="sens-ruido" min="0" max="5" step="1" value="3" aria-describedby="escala-perfil">
         </div>
 
         <div class="controle-sensibilidade">
           <div class="controle-linha">
-            <label for="sens-luz">Iluminação</label>
-            <span class="legenda" id="leg-luz">0 nada, 5 muito</span>
+            <label for="sens-luz">Seu incômodo com luz</label>
             <output id="valor-luz" for="sens-luz" aria-live="off">3</output>
           </div>
-          <input type="range" id="sens-luz" min="0" max="5" step="1" value="3" aria-describedby="leg-luz">
+          <input type="range" id="sens-luz" min="0" max="5" step="1" value="3" aria-describedby="escala-perfil">
         </div>
 
         <div class="controle-sensibilidade">
           <div class="controle-linha">
-            <label for="sens-lotacao">Lotação</label>
-            <span class="legenda" id="leg-lotacao">0 nada, 5 muito</span>
+            <label for="sens-lotacao">Seu incômodo com lotação</label>
             <output id="valor-lotacao" for="sens-lotacao" aria-live="off">3</output>
           </div>
-          <input type="range" id="sens-lotacao" min="0" max="5" step="1" value="3" aria-describedby="leg-lotacao">
+          <input type="range" id="sens-lotacao" min="0" max="5" step="1" value="3" aria-describedby="escala-perfil">
         </div>
 
         <div class="controle-sensibilidade">
           <div class="controle-linha">
-            <label for="sens-cheiro">Cheiros</label>
-            <span class="legenda" id="leg-cheiro">0 nada, 5 muito</span>
+            <label for="sens-cheiro">Seu incômodo com cheiros</label>
             <output id="valor-cheiro" for="sens-cheiro" aria-live="off">3</output>
           </div>
-          <input type="range" id="sens-cheiro" min="0" max="5" step="1" value="3" aria-describedby="leg-cheiro">
+          <input type="range" id="sens-cheiro" min="0" max="5" step="1" value="3" aria-describedby="escala-perfil">
         </div>
 
         <!-- Turno (RF03): rádios com visual de botão em grade de 3. Manhã é o turno inicial (8.3, K3). -->
@@ -152,23 +151,42 @@
                 <option value="todos">Todos os tipos</option>
               </select>
             </div>
-            <div class="opcao">
-              <input type="checkbox" id="filtro-adaptacao">
-              <label for="filtro-adaptacao">Somente com espaço calmo e saída fácil</label>
-            </div>
+            <!-- Versão 2 (pedido das entrevistas P1 e P6): 4 filtros independentes no lugar do filtro único.
+                 O value de cada caixa é a chave em js/dados.js (FILTROS_ADAPTACAO); marcar dois exige os dois. -->
+            <fieldset class="filtro-adaptacao">
+              <legend>Mostrar só lugares com</legend>
+              <div class="opcoes-linha">
+                <div class="opcao">
+                  <input type="checkbox" id="filtro-calmo" value="espacoCalmo">
+                  <label for="filtro-calmo">Espaço calmo</label>
+                </div>
+                <div class="opcao">
+                  <input type="checkbox" id="filtro-saida" value="saidaFacil">
+                  <label for="filtro-saida">Saída fácil</label>
+                </div>
+                <div class="opcao">
+                  <input type="checkbox" id="filtro-equipe" value="equipeTreinada">
+                  <label for="filtro-equipe">Equipe treinada</label>
+                </div>
+                <div class="opcao">
+                  <input type="checkbox" id="filtro-silenciosa" value="horaSilenciosa">
+                  <label for="filtro-silenciosa">Hora silenciosa</label>
+                </div>
+              </div>
+            </fieldset>
           </div>
 
           <!-- Resumo dinâmico (RF18): sempre no DOM e vazio no início, para o leitor de tela anunciar cada mudança (K3). -->
           <p id="resumo-lista" class="resumo" aria-live="polite"></p>
 
-          <!-- Limitação declarada do protótipo (6.1). -->
-          <p class="nota-limitacao">Neste protótipo, ruído e lotação variam por turno; iluminação e cheiro são valores fixos por local.</p>
+          <!-- Limitação declarada do protótipo (6.1). Versão 2: os 4 estímulos já variam por turno (pedido da entrevista P5). -->
+          <p class="nota-limitacao">Os 4 estímulos variam por turno. Os 12 locais são fictícios, para demonstração, e cada card diz de onde veio o dado.</p>
 
           <!-- Lista ordenada: a posição é o ranking (RF06). role="list" mantém a semântica de lista no Safari,
                que a remove quando o CSS tira os marcadores. -->
           <ol id="lista-locais" class="lista-locais" role="list"></ol>
 
-          <p id="estado-vazio" class="estado-vazio" hidden>Nenhum lugar corresponde aos filtros. Escolha outro tipo ou desmarque "Somente com espaço calmo e saída fácil".</p>
+          <p id="estado-vazio" class="estado-vazio" hidden>Nenhum lugar corresponde aos filtros. Escolha outro tipo ou desmarque uma das adaptações.</p>
         </section>
 
         <!-- Contribuição comunitária (M4, seção 12). formulario.js valida e mostra os erros na página (RF10 a RF12). -->
@@ -220,59 +238,61 @@
               <p class="erro-campo" id="erro-turno" hidden></p>
             </fieldset>
 
-            <!-- Níveis de 0 a 5 em select, não em campo numérico: garante inteiro e é mais fácil de usar (RN11, 12.1). -->
+            <!-- Níveis de 0 a 5 em select, não em campo numérico: garante inteiro e é mais fácil de usar (RN11, 12.1).
+                 Versão 2 (pedido da entrevista P4): legenda de referência da escala, ligada aos 4 selects. -->
             <fieldset>
-              <legend>Níveis observados (0 nada, 5 muito)</legend>
+              <legend>Como o lugar estava nesse turno</legend>
+              <p class="dica" id="escala-formulario">0 = não percebi, 1 ou 2 = leve, 3 = moderado, 4 ou 5 = forte. Informe o normal do turno; a hora silenciosa é descontada sozinha.</p>
               <div class="grade-niveis">
                 <div class="campo">
                   <label for="campo-ruido">Ruído *</label>
-                  <select id="campo-ruido" aria-required="true" aria-describedby="erro-ruido">
+                  <select id="campo-ruido" aria-required="true" aria-describedby="escala-formulario erro-ruido">
                     <option value="">Selecione</option>
-                    <option value="0">0</option>
+                    <option value="0">0 (não percebi)</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                     <option value="4">4</option>
-                    <option value="5">5</option>
+                    <option value="5">5 (forte)</option>
                   </select>
                   <p class="erro-campo" id="erro-ruido" hidden></p>
                 </div>
                 <div class="campo">
                   <label for="campo-luz">Iluminação *</label>
-                  <select id="campo-luz" aria-required="true" aria-describedby="erro-luz">
+                  <select id="campo-luz" aria-required="true" aria-describedby="escala-formulario erro-luz">
                     <option value="">Selecione</option>
-                    <option value="0">0</option>
+                    <option value="0">0 (não percebi)</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                     <option value="4">4</option>
-                    <option value="5">5</option>
+                    <option value="5">5 (forte)</option>
                   </select>
                   <p class="erro-campo" id="erro-luz" hidden></p>
                 </div>
                 <div class="campo">
                   <label for="campo-lotacao">Lotação *</label>
-                  <select id="campo-lotacao" aria-required="true" aria-describedby="erro-lotacao">
+                  <select id="campo-lotacao" aria-required="true" aria-describedby="escala-formulario erro-lotacao">
                     <option value="">Selecione</option>
-                    <option value="0">0</option>
+                    <option value="0">0 (não percebi)</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                     <option value="4">4</option>
-                    <option value="5">5</option>
+                    <option value="5">5 (forte)</option>
                   </select>
                   <p class="erro-campo" id="erro-lotacao" hidden></p>
                 </div>
                 <div class="campo">
                   <label for="campo-cheiro">Cheiros *</label>
-                  <select id="campo-cheiro" aria-required="true" aria-describedby="erro-cheiro">
+                  <select id="campo-cheiro" aria-required="true" aria-describedby="escala-formulario erro-cheiro">
                     <option value="">Selecione</option>
-                    <option value="0">0</option>
+                    <option value="0">0 (não percebi)</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                     <option value="4">4</option>
-                    <option value="5">5</option>
+                    <option value="5">5 (forte)</option>
                   </select>
                   <p class="erro-campo" id="erro-cheiro" hidden></p>
                 </div>
@@ -295,11 +315,36 @@
                   <input type="checkbox" id="campo-equipe">
                   <label for="campo-equipe">Equipe treinada</label>
                 </div>
+                <div class="opcao">
+                  <input type="checkbox" id="campo-silenciosa" aria-controls="detalhes-silenciosa">
+                  <label for="campo-silenciosa">Tem hora silenciosa</label>
+                </div>
+              </div>
+
+              <!-- Versão 2 (pedido da entrevista P3): turno, dia e horário da hora silenciosa.
+                   formulario.js mostra este bloco só com a caixa acima marcada; escondido, não é validado. -->
+              <div id="detalhes-silenciosa" class="detalhes-silenciosa" hidden>
+                <div class="campo">
+                  <label for="campo-silenciosa-turno">Turno da hora silenciosa *</label>
+                  <select id="campo-silenciosa-turno" aria-required="true" aria-describedby="erro-silenciosa-turno">
+                    <option value="">Selecione</option>
+                    <option value="manha">Manhã</option>
+                    <option value="tarde">Tarde</option>
+                    <option value="noite">Noite</option>
+                  </select>
+                  <p class="erro-campo" id="erro-silenciosa-turno" hidden></p>
+                </div>
+                <div class="campo">
+                  <label for="campo-silenciosa-descricao">Dia e horário *</label>
+                  <input type="text" id="campo-silenciosa-descricao" maxlength="40" autocomplete="off" placeholder="Ex.: Terça, 9h" aria-required="true" aria-describedby="erro-silenciosa-descricao">
+                  <p class="erro-campo" id="erro-silenciosa-descricao" hidden></p>
+                </div>
               </div>
             </fieldset>
 
             <!-- Opcional. As opções vêm de js/dados.js (K4). -->
             <div class="campo">
+              <!-- Versão 2 (pedido das entrevistas P3 e P6): o perfil vira o selo de origem do card. -->
               <label for="campo-perfil">Quem está enviando</label>
               <select id="campo-perfil">
                 <option value="">Prefiro não dizer</option>

@@ -24,6 +24,9 @@
   const contador = document.getElementById('contador-comentario');
   const fieldsetTurno = document.getElementById('campo-turno');
   const radiosTurno = form.querySelectorAll('input[name="campo-turno"]');
+  // Versão 2 (pedido da entrevista P3): campos da hora silenciosa, que só aparecem com a caixa marcada.
+  const caixaSilenciosa = document.getElementById('campo-silenciosa');
+  const detalhesSilenciosa = document.getElementById('detalhes-silenciosa');
 
   // Vira true logo após um envio válido e volta a false na próxima alteração do formulário (ver enviar).
   let acabouDeEnviar = false;
@@ -84,6 +87,9 @@
       espacoCalmo: marcado('campo-calmo'),
       saidaFacil: marcado('campo-saida'),
       equipeTreinada: marcado('campo-equipe'),
+      temHoraSilenciosa: marcado('campo-silenciosa'),
+      silenciosaTurno: valor('campo-silenciosa-turno'),
+      silenciosaDescricao: valor('campo-silenciosa-descricao'),
       privacidade: marcado('campo-privacidade')
     };
   }
@@ -95,6 +101,15 @@
    */
   function atualizarContador() {
     contador.textContent = `${comentario.value.length} de ${LIMITE_COMENTARIO} caracteres`;
+  }
+
+  /**
+   * Mostra os campos da hora silenciosa só quando a caixa está marcada (usa hidden, nunca estilo inline, R4).
+   * Escondidos, eles não são validados (calculo.validarContribuicao olha temHoraSilenciosa).
+   * @returns {void}
+   */
+  function alternarDetalhesSilenciosa() {
+    detalhesSilenciosa.hidden = !caixaSilenciosa.checked;
   }
 
   /**
@@ -202,6 +217,7 @@
       `com dados do turno ${rotuloTurno}. Ela some ao recarregar a página.`;
     form.reset();
     atualizarContador();
+    alternarDetalhesSilenciosa();
     acabouDeEnviar = true;
   }
 
@@ -218,6 +234,9 @@
   adicionarOpcoes(document.getElementById('campo-perfil'), Object.entries(dados.PERFIS_REMETENTE));
 
   comentario.addEventListener('input', atualizarContador);
+  caixaSilenciosa.addEventListener('change', alternarDetalhesSilenciosa);
+  // O navegador pode devolver a caixa marcada ao recarregar; os campos começam no estado certo.
+  alternarDetalhesSilenciosa();
   // O navegador pode devolver o texto do comentário ao recarregar; o contador começa já certo.
   atualizarContador();
 })(window.LugarCalmo = window.LugarCalmo || {});

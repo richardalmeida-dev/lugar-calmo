@@ -24,7 +24,8 @@
     perfil: { ruido: 3, luz: 3, lotacao: 3, cheiro: 3 },
     turno: TURNO_PADRAO,
     filtroTipo: 'todos',
-    somenteAdaptados: false,
+    // Versão 2: chaves de dados.FILTROS_ADAPTACAO marcadas (4 filtros independentes no lugar do filtro único).
+    exigir: [],
     locais: [...dados.LOCAIS_INICIAIS]
   };
 
@@ -33,7 +34,8 @@
   const estadoVazio = document.getElementById('estado-vazio');
   const avisoSomaZero = document.getElementById('aviso-soma-zero');
   const filtroTipo = document.getElementById('filtro-tipo');
-  const filtroAdaptacao = document.getElementById('filtro-adaptacao');
+  // Versão 2: uma caixa por adaptação; o value de cada uma é a chave em dados.FILTROS_ADAPTACAO.
+  const filtrosAdaptacao = document.querySelectorAll('.filtro-adaptacao input[type="checkbox"]');
   const botaoRestaurar = document.getElementById('btn-restaurar');
   const botoesPerfil = document.querySelectorAll('.btn-perfil');
   const radiosTurno = document.querySelectorAll('input[name="turno"]');
@@ -48,7 +50,7 @@
    * @returns {void}
    */
   function atualizar() {
-    const filtrados = calculo.filtrarLocais(estado.locais, { tipo: estado.filtroTipo, somenteAdaptados: estado.somenteAdaptados });
+    const filtrados = calculo.filtrarLocais(estado.locais, { tipo: estado.filtroTipo, exigir: estado.exigir });
     const avaliacoes = calculo.ordenarAvaliacoes(filtrados.map((local) => calculo.avaliarLocal(local, estado.perfil, estado.turno)));
     render.renderizarLista(lista, avaliacoes, estado.turno);
     // RF18: o resumo descreve só o que está na tela, por isso usa a lista já filtrada.
@@ -143,7 +145,7 @@
   marcarPerfil(PERFIL_PADRAO);
   selecionarTurno(estado.turno);
   filtroTipo.value = estado.filtroTipo;
-  filtroAdaptacao.checked = estado.somenteAdaptados;
+  filtrosAdaptacao.forEach((caixa) => { caixa.checked = estado.exigir.includes(caixa.value); });
 
   // RF02: o evento input recalcula enquanto o slider se move, com mouse, toque ou setas do teclado.
   ESTIMULOS.forEach((estimulo) => {
@@ -177,14 +179,17 @@
     });
   });
 
-  // RF09: os dois filtros valem juntos (a lógica fica em calculo.filtrarLocais).
+  // RF09: tipo e adaptações valem juntos (a lógica fica em calculo.filtrarLocais).
   filtroTipo.addEventListener('change', () => {
     estado.filtroTipo = filtroTipo.value;
     atualizar();
   });
-  filtroAdaptacao.addEventListener('change', () => {
-    estado.somenteAdaptados = filtroAdaptacao.checked;
-    atualizar();
+  filtrosAdaptacao.forEach((caixa) => {
+    caixa.addEventListener('change', () => {
+      // Lê todas as caixas de novo: o estado sempre espelha a tela, sem somar ou tirar item por item.
+      estado.exigir = Array.from(filtrosAdaptacao).filter((item) => item.checked).map((item) => item.value);
+      atualizar();
+    });
   });
 
   // 8.3: volta sliders a 3, perfil Padrão e turno Manhã; os filtros ficam como estão.

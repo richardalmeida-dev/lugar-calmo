@@ -801,3 +801,64 @@ textarea[aria-invalid="true"] {
   content: "\2713  " / "";
 }
 .mensagem-sucesso:empty { padding: 0; border: 0; margin: 0; }
+
+/* ---------- Versão 2: ajustes pedidos nas entrevistas ---------- */
+
+/* Legenda única da escala do perfil (P4): diz que o slider mede o
+   incômodo da pessoa, não o nível do lugar. */
+.escala-perfil {
+  margin: 0;
+  color: var(--cor-texto-suave);
+  font-size: .875rem;
+  line-height: 1.3;
+}
+
+/* 4 filtros de adaptação independentes (P1, P6): fieldset sem moldura
+   própria, porque já fica dentro da caixa .filtros. */
+.filtro-adaptacao {
+  flex: 2 1 18rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-inline-size: 0;
+}
+.filtro-adaptacao legend {
+  padding: 0;
+  font-weight: 700;
+}
+
+/* Os 4 níveis do turno ficam colados na nota (P2, P5). */
+.subindices-titulo {
+  margin: var(--espaco-2) 0 var(--espaco-1);
+  color: var(--cor-texto-suave);
+  font-size: .875rem;
+  font-weight: 700;
+}
+/* Nível forte para a pessoa: borda grossa e a palavra "forte",
+   além da cor do selo Evitar (a cor nunca é a única pista). */
+.estimulos .estimulo--forte {
+  border-bottom: 3px solid var(--selo-evitar-texto);
+}
+.estimulo--forte dd {
+  color: var(--selo-evitar-texto);
+}
+/* Alerta de gatilho (P2): mesmo padrão dos avisos, na família Evitar. */
+.alerta-gatilho {
+  margin-top: var(--espaco-2);
+  padding: var(--espaco-2) var(--espaco-3);
+  border-left: .375rem solid var(--selo-evitar-texto);
+  border-radius: var(--raio);
+  background: var(--selo-evitar-fundo);
+  color: var(--selo-evitar-texto);
+  font-weight: 700;
+}
+
+/* Campos da hora silenciosa no formulário (P3): aparecem só com a caixa
+   marcada (atributo hidden, controlado por formulario.js; a regra
+   [hidden] de base.css garante que o display: grid não o anule). */
+.detalhes-silenciosa {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 1fr));
+  gap: var(--espaco-3);
+  margin-top: var(--espaco-3);
+}

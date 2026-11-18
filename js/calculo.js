@@ -13,7 +13,7 @@
 (function (LC) {
   'use strict';
 
-  const { TURNOS, LIMIARES, TIPOS_LOCAL, PERFIS_REMETENTE } = LC.dados;
+  const { TURNOS, LIMIARES, TIPOS_LOCAL, PERFIS_REMETENTE, FILTROS_ADAPTACAO } = LC.dados;
 
   // Texto exibido de cada selo (RN05). A ordem das chaves também é a ordem do resumo (RF18).
   const ROTULOS_SELO = Object.freeze({ tranquilo: 'Tranquilo', atencao: 'Atenção', evitar: 'Evitar neste horário' });
@@ -23,6 +23,16 @@
 
   // RN11: nível do formulário é um único dígito de 0 a 5. A regex recusa "6", "-1", "2.5", "abc", " 3" e "".
   const NIVEL_VALIDO = /^[0-5]$/;
+
+  // Estímulos na ordem do card e do formulário. Na versão 2 os quatro variam por turno.
+  const CHAVES_ESTIMULO = Object.freeze(['ruido', 'luz', 'lotacao', 'cheiro']);
+
+  // Alerta de gatilho (versão 2, pedido da entrevista P2): um estímulo forte no local (4 ou 5) somado a uma
+  // sensibilidade alta da pessoa (4 ou 5) é avisado no card, porque a nota média pode esconder esse pico.
+  const NIVEL_FORTE = 4;
+
+  // Limite do texto da hora silenciosa informada no formulário ("Terça, 9h" cabe com folga).
+  const DESCRICAO_SILENCIOSA = Object.freeze({ min: 3, max: 40 });
 
   /**
    * Soma as quatro sensibilidades do perfil (o S da RN03).
@@ -44,10 +54,10 @@
   function situacaoNoTurno(local, turno) {
     // RN07: turno fora de turnosAbertos não tem nota.
     if (!local.turnosAbertos.includes(turno)) return 'fechado';
-    // RN16: contribuição só tem ruído e lotação no turno informado; nos outros turnos eles são null.
+    // RN16: contribuição só tem os 4 estímulos no turno informado; nos outros turnos eles são null.
     // typeof (e não === null) para que um dado ausente (undefined) também vire "sem dados", nunca NaN.
-    if (typeof local.ruido[turno] !== 'number' || typeof local.lotacao[turno] !== 'number') return 'sem-dados';
-    return 'aberto';
+    const temTodos = CHAVES_ESTIMULO.every((chave) => typeof local[chave][turno] === 'number');
+    return temTodos ? 'aberto' : 'sem-dados';
   }
 
   /**
@@ -63,11 +73,12 @@
     const ativa = local.horaSilenciosa !== null && local.horaSilenciosa.turno === turno;
     // RN06: ruído, luz e lotação caem 2 com piso 0; o cheiro não muda.
     const reducao = ativa ? 2 : 0;
+    // Versão 2: luz e cheiro também são lidos do turno, como ruído e lotação.
     return {
       ruido: Math.max(0, local.ruido[turno] - reducao),
-      luz: Math.max(0, local.luz - reducao),
+      luz: Math.max(0, local.luz[turno] - reducao),
       lotacao: Math.max(0, local.lotacao[turno] - reducao),
-      cheiro: local.cheiro,
+      cheiro: local.cheiro[turno],
       horaSilenciosaAtiva: ativa
     };
   }
@@ -133,38 +144,88 @@
   }
 
   /**
+   * Texto da linha de melhor horário (versão 2, pedido da entrevista P2).
+   * Abaixo da faixa Tranquilo (RN05), "melhor" daria uma falsa sensação de calma; vira "menos crítico".
+   * @param {number} nota maior nota do local entre os turnos
+   * @returns {'Melhor horário'|'Horário menos crítico'} rótulo da linha
+   */
+  function rotuloMelhorHorario(nota) {
+    return nota >= LIMIARES.tranquilo ? 'Melhor horário' : 'Horário menos crítico';
+  }
+
+  /**
+   * Estímulos que podem ser gatilho para a pessoa no turno (versão 2, pedido da entrevista P2).
+   * @param {{ruido: number, luz: number, lotacao: number, cheiro: number}|null} efetivos níveis efetivos no turno
+   * @param {{ruido: number, luz: number, lotacao: number, cheiro: number}} perfil sensibilidades de 0 a 5
+   * @returns {Array<string>} chaves dos estímulos com nível 4 ou 5 no local e sensibilidade 4 ou 5 na pessoa
+   */
+  function estimulosFortes(efetivos, perfil) {
+    if (efetivos === null) return [];
+    return CHAVES_ESTIMULO.filter((chave) => efetivos[chave] >= NIVEL_FORTE && perfil[chave] >= NIVEL_FORTE);
+  }
+
+  /**
+   * Origem do dado mostrada no card (RN10, RN13; versão 2, pedido das entrevistas P3 e P6).
+   * Comerciante ou gestor informa pelo estabelecimento; os demais perfis são relato comunitário.
+   * @param {object} local local sensorial
+   * @returns {string} texto do selo de origem
+   */
+  function descreverOrigem(local) {
+    if (local.ficticio) return 'Dado demonstrativo (fictício)';
+    if (local.perfilRemetente === 'comerciante-gestor') return 'Informação do estabelecimento (sessão, não verificada)';
+    if (local.perfilRemetente) return `Relato comunitário: ${PERFIS_REMETENTE[local.perfilRemetente]} (sessão, não verificada)`;
+    return 'Relato comunitário (sessão, não verificada)';
+  }
+
+  /**
    * Reúne tudo o que o card precisa para mostrar o local no turno escolhido.
    * @param {object} local local sensorial
    * @param {{ruido: number, luz: number, lotacao: number, cheiro: number}} perfil sensibilidades de 0 a 5
    * @param {string} turno 'manha' | 'tarde' | 'noite'
-   * @returns {{local: object, situacao: string, nota: (number|null), selo: (string|null), melhor: (object|null), efetivos: (object|null)}}
-   *   nota, selo e efetivos são null quando a situação não é 'aberto'
+   * @returns {{local: object, situacao: string, nota: (number|null), selo: (string|null), melhor: (object|null),
+   *   efetivos: (object|null), fortes: Array<string>}}
+   *   nota, selo e efetivos são null quando a situação não é 'aberto'; fortes fica vazio nesse caso
    */
   function avaliarLocal(local, perfil, turno) {
     const nota = calcularCompatibilidade(local, perfil, turno);
+    const efetivos = estimulosEfetivos(local, turno);
     return {
       local,
       situacao: situacaoNoTurno(local, turno),
       nota,
       selo: nota === null ? null : classificarSelo(nota),
       melhor: melhorTurno(local, perfil),
-      efetivos: estimulosEfetivos(local, turno)
+      efetivos,
+      fortes: estimulosFortes(efetivos, perfil)
     };
   }
 
   /**
-   * Aplica os filtros da lista (RF09).
-   * @param {Array<object>} locais locais sensoriais
-   * @param {{tipo: string, somenteAdaptados: boolean}} filtros tipo de TIPOS_LOCAL ou 'todos' (não filtra por tipo)
-   * @returns {Array<object>} novo array só com os locais que passam nos dois filtros
+   * Diz se o local tem a adaptação pedida no filtro.
+   * A hora silenciosa é um objeto (ou null); as outras adaptações são booleanos.
+   * @param {object} local local sensorial
+   * @param {string} chave chave de FILTROS_ADAPTACAO
+   * @returns {boolean} true quando o local tem a adaptação
    */
-  function filtrarLocais(locais, { tipo, somenteAdaptados }) {
+  function temAdaptacao(local, chave) {
+    return chave === 'horaSilenciosa' ? local.horaSilenciosa !== null : local[chave] === true;
+  }
+
+  /**
+   * Aplica os filtros da lista (RF09).
+   * Versão 2 (pedido das entrevistas P1 e P6): o antigo filtro único "espaço calmo e saída fácil" virou
+   * 4 filtros independentes. Cada um marcado precisa ser atendido (E), porque quem marca dois quer os dois.
+   * @param {Array<object>} locais locais sensoriais
+   * @param {{tipo: string, exigir: Array<string>}} filtros tipo de TIPOS_LOCAL ou 'todos' (não filtra por tipo)
+   *   e as chaves de FILTROS_ADAPTACAO marcadas (lista vazia não filtra por adaptação)
+   * @returns {Array<object>} novo array só com os locais que passam em todos os filtros
+   */
+  function filtrarLocais(locais, { tipo, exigir }) {
+    // Só chaves conhecidas valem: uma chave estranha vinda do HTML não pode esconder todos os locais.
+    const validas = exigir.filter((chave) => FILTROS_ADAPTACAO.some((filtro) => filtro.chave === chave));
     return locais.filter(function (local) {
       const tipoOk = tipo === 'todos' || local.tipo === tipo;
-      // RF09 [DECISÃO PRD]: exige espaço calmo E saída fácil. Com OU o filtro quase não teria efeito,
-      // porque nos dados todo local com espaço calmo também tem saída fácil.
-      const adaptacaoOk = !somenteAdaptados || (local.espacoCalmo === true && local.saidaFacil === true);
-      return tipoOk && adaptacaoOk;
+      return tipoOk && validas.every((chave) => temAdaptacao(local, chave));
     });
   }
 
@@ -233,6 +294,7 @@
    * Valida o formulário "Avaliar ou sugerir um local" (seção 12, contrato K6).
    * @param {{nome: string, tipo: string, turno: string, ruido: string, luz: string, lotacao: string, cheiro: string,
    *   perfilRemetente: string, comentario: string, espacoCalmo: boolean, saidaFacil: boolean, equipeTreinada: boolean,
+   *   temHoraSilenciosa: boolean, silenciosaTurno: string, silenciosaDescricao: string,
    *   privacidade: boolean}} valores valores crus do formulário ('' quando vazio)
    * @param {Array<object>} locaisExistentes locais já na lista, para recusar nome duplicado
    * @returns {{valido: boolean, erros: Object<string, string>}} erros só dos campos inválidos, na ordem do formulário
@@ -262,6 +324,17 @@
       if (!NIVEL_VALIDO.test(valores[campo])) erros[campo] = `Informe o nível de ${estimulo}, de 0 a 5.`;
     }
 
+    // Versão 2 (pedido da entrevista P3): a hora silenciosa pode ser informada. Só é validada se marcada.
+    if (valores.temHoraSilenciosa === true) {
+      if (!TURNOS.some((item) => item.id === valores.silenciosaTurno)) {
+        erros['silenciosa-turno'] = 'Escolha o turno da hora silenciosa.';
+      }
+      const descricao = limparNome(valores.silenciosaDescricao);
+      if (descricao.length < DESCRICAO_SILENCIOSA.min || descricao.length > DESCRICAO_SILENCIOSA.max) {
+        erros['silenciosa-descricao'] = `Informe o dia e o horário da hora silenciosa (ex.: Terça, 9h), com até ${DESCRICAO_SILENCIOSA.max} caracteres.`;
+      }
+    }
+
     if (valores.comentario.trim().length > 200) erros.comentario = 'O comentário pode ter no máximo 200 caracteres.';
     // Só o booleano true vale: a confirmação de privacidade precisa ser uma marcação explícita (LGPD).
     if (valores.privacidade !== true) erros.privacidade = 'Confirme que não incluiu nomes ou dados pessoais de terceiros.';
@@ -281,14 +354,18 @@
       nome: limparNome(valores.nome),
       tipo: valores.tipo,
       // RN16: só o turno da visita recebe dados; nos outros o card mostra "Sem dados neste turno".
+      // Versão 2: os 4 estímulos seguem a mesma regra, porque todos variam por turno.
       ruido: { manha: null, tarde: null, noite: null, [valores.turno]: Number(valores.ruido) },
-      luz: Number(valores.luz),
+      luz: { manha: null, tarde: null, noite: null, [valores.turno]: Number(valores.luz) },
       lotacao: { manha: null, tarde: null, noite: null, [valores.turno]: Number(valores.lotacao) },
-      cheiro: Number(valores.cheiro),
+      cheiro: { manha: null, tarde: null, noite: null, [valores.turno]: Number(valores.cheiro) },
       espacoCalmo: valores.espacoCalmo === true,
       saidaFacil: valores.saidaFacil === true,
       equipeTreinada: valores.equipeTreinada === true,
-      horaSilenciosa: null,
+      // Versão 2 (pedido da entrevista P3): hora silenciosa informada no formulário, já validada.
+      horaSilenciosa: valores.temHoraSilenciosa === true
+        ? { turno: valores.silenciosaTurno, descricao: limparNome(valores.silenciosaDescricao) }
+        : null,
       // Não sabemos se o local fecha em algum turno; os turnos sem dados ficam como "sem-dados", não "fechado".
       turnosAbertos: ['manha', 'tarde', 'noite'],
       ficticio: false,
@@ -308,6 +385,9 @@
     classificarSelo,
     rotuloSelo,
     melhorTurno,
+    rotuloMelhorHorario,
+    estimulosFortes,
+    descreverOrigem,
     avaliarLocal,
     filtrarLocais,
     ordenarAvaliacoes,

@@ -12,8 +12,8 @@
 (function (LC) {
   'use strict';
 
-  const { TURNOS, LIMIARES, PERFIS_REMETENTE } = LC.dados;
-  const { rotuloSelo } = LC.calculo;
+  const { TURNOS, LIMIARES } = LC.dados;
+  const { rotuloSelo, rotuloMelhorHorario, descreverOrigem } = LC.calculo;
 
   // Lista branca de atributos da seção 10.2; os aria-* entram pelo prefixo. Fora dela, nada chega ao DOM
   // (por exemplo, atributos de evento ou de estilo, que poderiam executar código ou mudar a aparência).
@@ -21,9 +21,7 @@
     'id', 'class', 'src', 'alt', 'width', 'height', 'href', 'min', 'max', 'low', 'high', 'optimum', 'value', 'role'
   ]);
 
-  // Origem do dado mostrada em todo card (RN10, RN13).
-  const ROTULO_FICTICIO = 'Dado de demonstração (fictício)';
-  const ROTULO_CONTRIBUICAO = 'Contribuição cidadã (sessão, não verificada)';
+  // Origem do dado mostrada em todo card (RN10, RN13): o texto vem de calculo.descreverOrigem (versão 2).
 
   // Etiquetas de adaptação na ordem do card (RF08, K8): propriedade do local, ícone e texto.
   const ETIQUETAS = Object.freeze([
@@ -34,6 +32,8 @@
 
   // Estímulos efetivos do <dl> (K8): chave em avaliacao.efetivos e rótulo exibido.
   const ESTIMULOS = Object.freeze([['ruido', 'Ruído'], ['luz', 'Iluminação'], ['lotacao', 'Lotação'], ['cheiro', 'Cheiros']]);
+  // Nome em minúsculas para a frase do alerta de gatilho ("ruído e luz fortes...").
+  const NOMES_ALERTA = Object.freeze({ ruido: 'ruído', luz: 'iluminação', lotacao: 'lotação', cheiro: 'cheiros' });
 
   /**
    * Cria um elemento só com textContent e setAttribute (contrato 10.2).
@@ -133,18 +133,37 @@
   }
 
   /**
-   * Níveis efetivos no turno, já com a hora silenciosa aplicada (K8).
+   * Os 4 níveis efetivos no turno, já com a hora silenciosa aplicada (K8), logo abaixo da nota.
+   * Versão 2 (pedido das entrevistas P2 e P5): a nota de 0 a 100 é uma média e pode esconder um pico.
+   * Por isso os 4 níveis ficam juntos da nota, e o nível forte para a pessoa ganha a palavra "forte" e borda (não só cor).
+   * @param {string} prefixo início dos ids do card ("local-{id}")
    * @param {{ruido: number, luz: number, lotacao: number, cheiro: number}} efetivos níveis de 0 a 5
-   * @returns {HTMLElement} lista de descrição com um grupo por estímulo
+   * @param {Array<string>} fortes chaves de calculo.estimulosFortes
+   * @returns {HTMLElement} bloco com título, lista de descrição e, se houver, o alerta de gatilho
    */
-  function criarEstimulos(efetivos) {
-    const lista = criarElemento('dl', { classe: 'estimulos' });
+  function criarEstimulos(prefixo, efetivos, fortes) {
+    const bloco = criarElemento('div', { classe: 'subindices' });
+    const titulo = criarElemento('p', { classe: 'subindices-titulo', texto: 'Níveis neste turno (0 a 5)', atributos: { id: `${prefixo}-niveis` } });
+    const lista = criarElemento('dl', { classe: 'estimulos', atributos: { 'aria-labelledby': `${prefixo}-niveis` } });
     for (const [chave, rotulo] of ESTIMULOS) {
-      const grupo = criarElemento('div');
-      grupo.append(criarElemento('dt', { texto: rotulo }), criarElemento('dd', { texto: `${efetivos[chave]}/5` }));
+      const forte = fortes.includes(chave);
+      const grupo = criarElemento('div', { classe: forte ? 'estimulo--forte' : undefined });
+      grupo.append(
+        criarElemento('dt', { texto: rotulo }),
+        criarElemento('dd', { texto: forte ? `${efetivos[chave]}/5 forte` : `${efetivos[chave]}/5` })
+      );
       lista.append(grupo);
     }
-    return lista;
+    bloco.append(titulo, lista);
+    if (fortes.length > 0) {
+      const nomes = fortes.map((chave) => NOMES_ALERTA[chave]);
+      const frase = nomes.length === 1 ? nomes[0] : `${nomes.slice(0, -1).join(', ')} e ${nomes[nomes.length - 1]}`;
+      bloco.append(criarElemento('p', {
+        classe: 'alerta-gatilho',
+        texto: `Atenção: ${frase} ${nomes.length === 1 ? 'está forte' : 'estão fortes'} para o seu perfil neste turno.`
+      }));
+    }
+    return bloco;
   }
 
   /**
@@ -154,7 +173,7 @@
    * @returns {HTMLElement} o <article> do card
    */
   function criarCard(avaliacao, turno) {
-    const { local, situacao, nota, selo, melhor, efetivos } = avaliacao;
+    const { local, situacao, nota, selo, melhor, efetivos, fortes } = avaliacao;
     const prefixo = `local-${local.id}`;
     const aberto = situacao === 'aberto';
     const contribuicao = local.enviadoPeloUsuario === true;
@@ -171,23 +190,25 @@
       criarElemento('h3', { texto: local.nome, atributos: { id: `${prefixo}-nome` } }),
       criarElemento('p', { classe: 'card-tipo', texto: local.tipo })
     );
-    // RN10 e RN13: o rótulo diz de onde veio o dado; o fictício tem prioridade.
-    let origem = null;
-    if (local.ficticio) origem = ROTULO_FICTICIO;
-    else if (local.enviadoPeloUsuario) origem = ROTULO_CONTRIBUICAO;
-    if (origem !== null) topo.append(criarElemento('p', { classe: 'rotulo-origem', texto: origem }));
+    // RN10 e RN13: o selo diz de onde veio o dado (versão 2: relato comunitário ou informação do estabelecimento).
+    topo.append(criarElemento('p', { classe: 'rotulo-origem', texto: descreverOrigem(local) }));
     card.append(topo);
 
     if (aberto) {
-      card.append(criarSelo(selo), criarNota(prefixo, nota, selo));
+      // Versão 2: os 4 níveis ficam logo depois da nota consolidada.
+      card.append(criarSelo(selo), criarNota(prefixo, nota, selo), criarEstimulos(prefixo, efetivos, fortes));
     } else {
       // RN07 e RN16: sem nota; o aviso em texto diz o motivo.
       card.append(criarElemento('p', { classe: 'aviso-turno', texto: situacao === 'fechado' ? 'Fechado neste turno' : 'Sem dados neste turno' }));
     }
 
     // RN08: sem nenhum turno com nota, a linha não aparece.
+    // Versão 2: abaixo de 70 a linha diz "Horário menos crítico", para não prometer calma (calculo.rotuloMelhorHorario).
     if (melhor !== null) {
-      card.append(criarElemento('p', { classe: 'melhor-horario', texto: `Melhor horário: ${rotuloTurno(melhor.turno)} (${melhor.nota})` }));
+      card.append(criarElemento('p', {
+        classe: 'melhor-horario',
+        texto: `${rotuloMelhorHorario(melhor.nota)}: ${rotuloTurno(melhor.turno)} (${melhor.nota})`
+      }));
     }
 
     const etiquetas = criarEtiquetas(local);
@@ -198,18 +219,9 @@
       card.append(criarElemento('p', { classe: 'hora-silenciosa-ativa', texto: 'Hora silenciosa neste turno: estímulos reduzidos' }));
     }
 
-    // Os níveis só existem com o local aberto e com dados no turno.
-    if (efetivos !== null) card.append(criarEstimulos(efetivos));
-
-    // Só contribuições têm relato e remetente; os dois entram como texto (RNF05).
-    if (contribuicao) {
-      if (local.comentario) {
-        card.append(criarElemento('p', { classe: 'relato', texto: `Relato: ${local.comentario}` }));
-      }
-      if (local.perfilRemetente) {
-        // K8: mostra o rótulo do perfil, nunca a chave interna.
-        card.append(criarElemento('p', { classe: 'remetente', texto: `Enviado por: ${PERFIS_REMETENTE[local.perfilRemetente]}` }));
-      }
+    // Só contribuições têm relato; ele entra como texto (RNF05). Quem enviou já aparece no selo de origem.
+    if (contribuicao && local.comentario) {
+      card.append(criarElemento('p', { classe: 'relato', texto: `Relato: ${local.comentario}` }));
     }
     return card;
   }
