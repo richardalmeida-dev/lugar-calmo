@@ -134,7 +134,7 @@ Detalhes na página Impacto: https://richardalmeida-dev.github.io/lugar-calmo/im
 
 - Site publicado (GitHub Pages): https://richardalmeida-dev.github.io/lugar-calmo/
 - Repositório no GitHub: https://github.com/richardalmeida-dev/lugar-calmo
-- Vídeo pitch: [PREENCHER URL]
+- Vídeo pitch: https://youtu.be/_bgsdlb4hsA?is=59bjHY5lfsKy66_w
 - Versão 1 do protótipo: https://richardalmeida-dev.github.io/lugar-calmo/v1/
 
 ## Fontes
