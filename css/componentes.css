@@ -862,3 +862,28 @@ textarea[aria-invalid="true"] {
   gap: var(--espaco-3);
   margin-top: var(--espaco-3);
 }
+
+/* Citações das entrevistas (impacto.html): barra lateral e autor por
+   código (P1 a P6), nunca por nome. */
+.citacoes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+  gap: var(--espaco-4);
+  margin-bottom: var(--espaco-6);
+}
+.citacoes blockquote {
+  margin: 0;
+  padding: var(--espaco-3) var(--espaco-4);
+  border-left: .375rem solid var(--cor-primaria);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+}
+.citacoes blockquote p {
+  margin: 0 0 var(--espaco-2);
+  font-style: italic;
+}
+.citacoes footer {
+  color: var(--cor-texto-suave);
+  font-size: .9375rem;
+  font-weight: 700;
+}

@@ -56,6 +56,7 @@
             <li><strong>Ordenação por turno:</strong> a lista muda de manhã, à tarde e à noite.</li>
             <li><strong>Modo Calmo e acessibilidade nativa:</strong> tamanho do texto, alto contraste, uso pelo teclado e pelo leitor de tela.</li>
             <li><strong>Colaboração validada:</strong> o formulário confere cada campo antes de aceitar uma avaliação.</li>
+            <li><strong>Escuta de pessoas reais:</strong> 6 entrevistas mudaram 7 pontos do protótipo (veja abaixo).</li>
           </ul>
         </div>
         <div class="cartao">
@@ -163,12 +164,154 @@
       </ol>
     </section>
 
-    <!-- 6. Status da validação (8.5, item 6). Texto padrão: nunca inventar número.
-         A marca pendente logo abaixo fica de propósito: a equipe decide antes da entrega se mantém este texto
-         ou troca por "Ouvimos N pessoas (P1 a PN) em DD/11/2026", conforme a escuta real. -->
-    <section class="secao" aria-labelledby="titulo-status">
-      <h2 id="titulo-status">Status da validação</h2>
-      <p id="status-validacao">A validação comunitária com pessoas autistas, familiares e comerciantes é a próxima etapa do projeto. <span class="pendente">[PREENCHER PELA EQUIPE: confirmar este texto ou trocar por "Ouvimos N pessoas (P1 a PN) em DD/11/2026"]</span></p>
+    <!-- 6. Validação com pessoas reais (8.5, item 6; diferencial do edital "Validado com gente real").
+         Registros só por código (P1 a P6), sem nome, idade ou profissão, como manda o protocolo acima.
+         Fonte: documentação das entrevistas da equipe (pesquisa social). -->
+    <section class="secao" id="validacao" aria-labelledby="titulo-status">
+      <h2 id="titulo-status">Validação com pessoas reais</h2>
+      <p id="status-validacao">Ouvimos <strong>6 pessoas (P1 a P6)</strong> em novembro de 2026: 2 adultos autistas, 2 familiares que cuidam de crianças autistas, 1 pessoa com hipersensibilidade a luz e odores e 1 gerente de supermercado de bairro.</p>
+      <p>Cada conversa teve 4 etapas: apresentação e consentimento, perguntas abertas sobre o dia a dia, apresentação do Lugar Calmo e uso do protótipo. Os áudios foram gravados com autorização. Usamos IA generativa para transcrever os áudios e apoiar a análise de cada entrevista; a equipe revisou tudo.</p>
+
+      <h3>O que cada pessoa contou</h3>
+      <!-- A caixa rola sozinha em telas estreitas; tabindex="0" deixa rolar pelo teclado. -->
+      <div class="tabela-rolagem" role="region" aria-labelledby="legenda-entrevistas" tabindex="0">
+        <table class="tabela-ods">
+          <caption id="legenda-entrevistas">Perfil, necessidade e pedido de melhoria de cada participante</caption>
+          <thead>
+            <tr>
+              <th scope="col">Participante</th>
+              <th scope="col">Necessidade central</th>
+              <th scope="col">O que mais valorizou</th>
+              <th scope="col">O que pediu para melhorar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">P1, adulto autista independente</th>
+              <td>Autonomia sem expor o diagnóstico.</td>
+              <td>Uso sem login e recálculo na hora ao trocar o turno.</td>
+              <td>Separar o filtro de espaço calmo e saída fácil.</td>
+            </tr>
+            <tr>
+              <th scope="row">P2, adulta autista com hipersensibilidade</th>
+              <td>Evitar sobrecarga por um único estímulo extremo.</td>
+              <td>Modo Calmo e perfis rápidos de 1 clique.</td>
+              <td>Mostrar a nota de cada estímulo no card.</td>
+            </tr>
+            <tr>
+              <th scope="row">P3, mãe de criança autista</th>
+              <td>Prevenir crises e confiar no relato de outras famílias.</td>
+              <td>Selo de hora silenciosa e saída fácil.</td>
+              <td>Poder informar a hora silenciosa no formulário.</td>
+            </tr>
+            <tr>
+              <th scope="row">P4, avô cuidador, pouca familiaridade digital</th>
+              <td>Leitura fácil, sem número ambíguo.</td>
+              <td>Botão A+ e selos visuais (Tranquilo e Evitar).</td>
+              <td>Rótulos mais diretos nas escalas de 0 a 5.</td>
+            </tr>
+            <tr>
+              <th scope="row">P5, pessoa com enxaqueca crônica</th>
+              <td>Saber como estarão a luz e os odores em cada horário.</td>
+              <td>Peso separado para luz e cheiro e o fundo suave.</td>
+              <td>Fazer iluminação e cheiros variarem por turno.</td>
+            </tr>
+            <tr>
+              <th scope="row">P6, gerente de supermercado de bairro</th>
+              <td>Atrair clientes nos horários vazios sem reformas.</td>
+              <td>Selo que fala do horário e a indicação de melhor horário.</td>
+              <td>Diferenciar relato da comunidade de informação do estabelecimento.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>O que ouvimos</h3>
+      <div class="citacoes">
+        <blockquote>
+          <p>“Se pedisse cadastro com dados de saúde, eu fecharia na hora.”</p>
+          <footer>P1, adulto autista</footer>
+        </blockquote>
+        <blockquote>
+          <p>“Se um lugar tira 75 porque é silencioso e vazio, mas o cheiro é nível 5 e eu tenho hipersensibilidade severa a odor, eu vou passar mal do mesmo jeito.”</p>
+          <footer>P2, adulta autista</footer>
+        </blockquote>
+        <blockquote>
+          <p>“Se o usuário informa o turno ao avaliar luz e cheiro, o sistema precisa guardar isso por turno.”</p>
+          <footer>P5, pessoa com enxaqueca crônica</footer>
+        </blockquote>
+        <blockquote>
+          <p>“Quando o comerciante vê que não precisa gastar dinheiro reformando a loja, só desligar o som por uma hora na semana, ele adere.”</p>
+          <footer>P6, gerente de supermercado</footer>
+        </blockquote>
+      </div>
+
+      <h3>O que mudou por causa das entrevistas</h3>
+      <div class="tabela-rolagem" role="region" aria-labelledby="legenda-mudancas" tabindex="0">
+        <table class="tabela-ods">
+          <caption id="legenda-mudancas">Da versão 1 para a versão 2 do protótipo</caption>
+          <thead>
+            <tr>
+              <th scope="col">Mudança</th>
+              <th scope="col">Quem pediu</th>
+              <th scope="col">Versão 1</th>
+              <th scope="col">Versão 2 (atual)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Níveis de cada estímulo no card</th>
+              <td>P2 e P5</td>
+              <td>Os 4 níveis ficavam no fim do card, longe da nota.</td>
+              <td>Ruído, iluminação, lotação e cheiros (0 a 5) logo abaixo da nota, com alerta quando um estímulo forte encontra uma sensibilidade alta sua.</td>
+            </tr>
+            <tr>
+              <th scope="row">Filtros separados</th>
+              <td>P1 e P6</td>
+              <td>Um filtro só: "espaço calmo e saída fácil".</td>
+              <td>4 filtros independentes: espaço calmo, saída fácil, equipe treinada e hora silenciosa.</td>
+            </tr>
+            <tr>
+              <th scope="row">Escalas mais claras</th>
+              <td>P4</td>
+              <td>"Ruído: 0 nada, 5 muito", sem dizer se era o lugar ou a pessoa.</td>
+              <td>"Seu incômodo com ruído", com a escala "0 = tolero bem, 5 = incomoda muito". No formulário, uma legenda de 0 a 5.</td>
+            </tr>
+            <tr>
+              <th scope="row">Melhor horário honesto</th>
+              <td>P2</td>
+              <td>"Melhor horário" mesmo quando a maior nota era baixa.</td>
+              <td>Abaixo de 70 (fora da faixa Tranquilo), a linha diz "Horário menos crítico".</td>
+            </tr>
+            <tr>
+              <th scope="row">Luz e cheiro por turno</th>
+              <td>P5</td>
+              <td>Iluminação e cheiros eram fixos o dia todo.</td>
+              <td>Os 4 estímulos variam de manhã, à tarde e à noite.</td>
+            </tr>
+            <tr>
+              <th scope="row">Hora silenciosa no formulário</th>
+              <td>P3</td>
+              <td>Só os locais de demonstração tinham hora silenciosa.</td>
+              <td>Quem avalia pode informar o turno, o dia e o horário da hora silenciosa.</td>
+            </tr>
+            <tr>
+              <th scope="row">Origem do dado no card</th>
+              <td>P3 e P6</td>
+              <td>"Contribuição cidadã", sem dizer quem enviou.</td>
+              <td>"Relato comunitário: Familiar ou cuidador", "Informação do estabelecimento" ou "Dado demonstrativo".</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>O que ficou para a próxima etapa</h3>
+      <p>Dois pedidos dependem de um servidor e de uma API, que ficam fora deste protótipo em HTML, CSS e JavaScript:</p>
+      <ul class="lista-simples">
+        <li><strong>Mapa visual e localização opcional:</strong> endereço ou bairro nos cards, com a localização só se a pessoa permitir.</li>
+        <li><strong>Avaliações guardadas na nuvem com moderação:</strong> histórico por turno e selo de verificação para comércios e serviços públicos.</li>
+      </ul>
+      <p>Compare com a versão anterior: <a href="https://richardalmeida-dev.github.io/lugar-calmo/v1/" target="_blank" rel="noopener noreferrer">versão 1 do protótipo, de antes das entrevistas<span class="visualmente-oculto"> (abre em nova aba)</span></a> (<a href="https://github.com/richardalmeida-dev/lugar-calmo/tree/v1.0" target="_blank" rel="noopener noreferrer">código da versão 1<span class="visualmente-oculto"> (abre em nova aba)</span></a>).</p>
     </section>
 
     <!-- 7. Visão futura (M8): só descrita em texto, fora do protótipo (3.2). -->

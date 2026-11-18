@@ -18,9 +18,11 @@ Nota metodológica: o Censo investiga o diagnóstico declarado por profissional 
 
 ## Como funciona
 
-1. **Ajuste suas 4 sensibilidades** (ruído, iluminação, lotação, cheiros), de 0 (nada) a 5 (muito). Há perfis rápidos: Padrão, Perfil Ana e Perfil Rafael.
+1. **Ajuste suas 4 sensibilidades** (seu incômodo com ruído, luz, lotação e cheiros), de 0 (tolero bem) a 5 (incomoda muito). Há perfis rápidos: Padrão, Perfil Ana e Perfil Rafael.
 2. **Escolha o turno**: Manhã, Tarde ou Noite.
-3. **Veja os lugares do mais ao menos compatível**, com selo e melhor horário.
+3. **Veja os lugares do mais ao menos compatível**, com selo, os 4 níveis do turno, alerta de gatilho e melhor horário.
+4. **Filtre** por tipo de local e por adaptação (espaço calmo, saída fácil, equipe treinada, hora silenciosa).
+5. **Avalie ou sugira um local** no formulário, inclusive com a hora silenciosa.
 
 **Fórmula resumida**
 
@@ -32,7 +34,8 @@ Bônus     = +5 se tem espaço calmo, +5 se tem saída fácil
 
 - **Selos**: nota de 70 ou mais é **Tranquilo**; de 40 a 69, **Atenção**; abaixo de 40, **Evitar neste horário**. Cada selo tem ícone e texto, porque a cor nunca é a única pista.
 - **Hora Silenciosa**: no turno em que o local tem hora silenciosa, ruído, iluminação e lotação caem 2 pontos (mínimo 0).
-- **Melhor horário**: o turno aberto com a maior nota. Em caso de empate, vale a ordem manhã, tarde, noite.
+- **Melhor horário**: o turno aberto com a maior nota. Em caso de empate, vale a ordem manhã, tarde, noite. Se essa nota fica abaixo de 70, a linha diz **Horário menos crítico**, para não prometer calma.
+- **Alerta de gatilho**: quando um estímulo está em 4 ou 5 no local e a sua sensibilidade a ele também é 4 ou 5, o card avisa, porque a nota média pode esconder esse pico.
 - Se todas as sensibilidades forem 0, todo local aberto recebe nota 100, e um aviso pede para ajustar os controles.
 - Locais fechados ou sem dados no turno vão para o fim da lista.
 
@@ -82,9 +85,32 @@ lugar-calmo/
 
 ## Aviso sobre os dados
 
-- Os **12 locais são fictícios** e servem só para demonstração. Cada card mostra "Dado de demonstração (fictício)".
-- Neste protótipo, ruído e lotação variam por turno; iluminação e cheiro são valores fixos por local.
-- As contribuições enviadas pelo formulário valem **só durante a sessão**: somem ao recarregar a página e aparecem como "Contribuição cidadã (sessão, não verificada)".
+- Os **12 locais são fictícios** e servem só para demonstração. Cada card mostra "Dado demonstrativo (fictício)".
+- Os 4 estímulos (ruído, iluminação, lotação e cheiros) variam por turno.
+- As contribuições enviadas pelo formulário valem **só durante a sessão**: somem ao recarregar a página. O card diz a origem: "Relato comunitário" (com o perfil de quem enviou) ou "Informação do estabelecimento".
+
+## Validação com pessoas reais
+
+Ouvimos 6 pessoas (P1 a P6) em novembro de 2026: 2 adultos autistas, 2 familiares que cuidam de crianças autistas, 1 pessoa com enxaqueca crônica e 1 gerente de supermercado de bairro. Os registros usam só códigos, sem nomes. Elas usaram o protótipo e pediram 7 mudanças, todas feitas na versão 2:
+
+| Mudança | Quem pediu |
+|---|---|
+| Os 4 níveis do turno logo abaixo da nota, com alerta de gatilho | P2 e P5 |
+| 4 filtros de adaptação independentes | P1 e P6 |
+| Escalas claras: "Seu incômodo com ruído", de 0 (tolero bem) a 5 (incomoda muito), e legenda no formulário | P4 |
+| "Horário menos crítico" quando a maior nota fica abaixo de 70 | P2 |
+| Iluminação e cheiros variando por turno | P5 |
+| Hora silenciosa no formulário | P3 |
+| Origem do dado no card | P3 e P6 |
+
+Ficaram para a próxima etapa, porque dependem de servidor e API: mapa visual com localização opcional e avaliações guardadas na nuvem com moderação.
+
+Detalhes na página Impacto: https://richardalmeida-dev.github.io/lugar-calmo/impacto.html#validacao
+
+## Versões
+
+- **Versão 2 (atual)**: com as mudanças pedidas nas entrevistas.
+- **Versão 1**, de antes das entrevistas: https://richardalmeida-dev.github.io/lugar-calmo/v1/ (código na tag [`v1.0`](https://github.com/richardalmeida-dev/lugar-calmo/tree/v1.0)). A pasta `v1/` do repositório existe só para essa comparação e não faz parte da entrega.
 
 ## Objetivos de Desenvolvimento Sustentável
 
@@ -108,6 +134,7 @@ lugar-calmo/
 - Site publicado (GitHub Pages): https://richardalmeida-dev.github.io/lugar-calmo/
 - Repositório no GitHub: https://github.com/richardalmeida-dev/lugar-calmo
 - Vídeo pitch: [PREENCHER URL]
+- Versão 1 do protótipo: https://richardalmeida-dev.github.io/lugar-calmo/v1/
 
 ## Fontes
 
@@ -117,3 +144,7 @@ lugar-calmo/
 - [Lei 13.146/2015 (LBI)](https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13146.htm): direito à acessibilidade e eliminação de barreiras
 - [Lei 13.709/2018 (LGPD)](https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm), Art. 11: dados sensíveis de saúde
 - [ONU Brasil, Objetivos de Desenvolvimento Sustentável](https://brasil.un.org/pt-br/sdgs)
+
+## Uso de IA generativa
+
+- **Entrevistas**: usamos IA generativa para transcrever os áudios das entrevistas e para apoiar a análise individual de cada uma. A equipe revisou as transcrições e as análises.
