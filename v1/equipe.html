@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Equipe e metodologia do Lugar Calmo: quem fez o quê, as 4 etapas CitizenTech, links do projeto e fontes oficiais.">
+  <title>Equipe | Lugar Calmo (versão 1)</title>
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <!-- Ordem fixa (8.1): base (variáveis) primeiro e temas por último, para que Modo Calmo e Alto Contraste sobrescrevam as variáveis. -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/componentes.css">
+  <link rel="stylesheet" href="css/temas.css">
+  <!-- R2: script com defer e sem módulos, para abrir por duplo clique (file://). Aplica as preferências salvas (RF20). -->
+  <script src="js/acessibilidade.js" defer></script>
+</head>
+<body>
+  <!-- Cópia congelada da versão 1 (tag v1.0), mantida só para comparação com a versão atual. -->
+  <p class="aviso-versao">Você está na <strong>versão 1</strong> do protótipo, de antes das entrevistas com pessoas reais. <a href="../index.html">Ver a versão atual</a>.</p>
+  <!-- Atalho de teclado: pula o cabeçalho e vai direto ao conteúdo. -->
+  <a class="pular-conteudo" href="#conteudo">Ir para o conteúdo</a>
+
+  <!-- Cabeçalho idêntico nas 4 páginas (RF16); só o aria-current muda. -->
+  <header class="cabecalho">
+    <a class="marca" href="index.html"><img src="img/favicon.svg" alt="" width="32" height="32"> Lugar Calmo</a>
+    <!-- Menu horizontal com 4 links, sempre visível, sem hambúrguer (R11). -->
+    <nav aria-label="Navegação principal">
+      <ul class="menu">
+        <li><a href="index.html">Início</a></li>
+        <li><a href="solucao.html">Solução</a></li>
+        <li><a href="impacto.html">Impacto</a></li>
+        <li><a href="equipe.html" aria-current="page">Equipe</a></li>
+      </ul>
+    </nav>
+    <!-- Barra de acessibilidade (M5). O comportamento fica em js/acessibilidade.js (RF13, RF14, RF15).
+         O aria-label de A-/A+ começa pelo texto visível para cumprir o WCAG 2.5.3 (Rótulo no Nome, RNF01). -->
+    <div class="barra-acessibilidade" role="group" aria-label="Preferências de leitura">
+      <button type="button" id="btn-fonte-menos" aria-label="A-: diminuir tamanho do texto">A-</button>
+      <button type="button" id="btn-fonte-mais" aria-label="A+: aumentar tamanho do texto">A+</button>
+      <button type="button" id="btn-contraste" aria-pressed="false">Alto contraste</button>
+      <button type="button" id="btn-modo-calmo" aria-pressed="false">Modo Calmo</button>
+    </div>
+  </header>
+
+  <!-- tabindex="-1" deixa o link "Ir para o conteúdo" mover o foco para cá. -->
+  <main id="conteudo" tabindex="-1">
+    <h1>Equipe e metodologia</h1>
+    <p class="introducao">Quem fez o Lugar Calmo, como o trabalho foi organizado e de onde vêm os dados.</p>
+
+    <!-- 1. Quem fez o quê: divisão de tarefas combinada pelo grupo. -->
+    <section class="secao" aria-labelledby="titulo-papeis">
+      <h2 id="titulo-papeis">Quem fez o quê</h2>
+      <ul class="grade-cartoes">
+        <li class="cartao">
+          <h3>Concepção da solução e entrevistas</h3>
+          <p>Projeto da solução Lugar Calmo, entrevistas com pessoas reais e apoio ao grupo nas outras etapas.</p>
+          <dl class="dados-integrante">
+            <div><dt>Nome:</dt><dd>Francisco Wellington da Silva Rodrigues</dd></div>
+            <div><dt>RM:</dt><dd>RM566700</dd></div>
+          </dl>
+        </li>
+        <li class="cartao">
+          <h3>Código e vídeo</h3>
+          <p>Todo o código do protótipo: as 4 páginas em HTML5, o CSS responsivo, o motor de compatibilidade, os cards, o formulário e a acessibilidade (Modo Calmo, Alto Contraste e tamanho do texto). Também grava e edita o vídeo pitch.</p>
+          <dl class="dados-integrante">
+            <div><dt>Nome:</dt><dd>Richard Henrique Godoy de Almeida</dd></div>
+            <div><dt>RM:</dt><dd>RM574660</dd></div>
+          </dl>
+        </li>
+        <li class="cartao">
+          <h3>Testes</h3>
+          <p>Confere se todas as funções e tudo o que está documentado foi implementado e está funcionando.</p>
+          <dl class="dados-integrante">
+            <div><dt>Nome:</dt><dd>Alexandre Oliveira Machado</dd></div>
+            <div><dt>RM:</dt><dd>RM575671</dd></div>
+          </dl>
+        </li>
+        <li class="cartao">
+          <h3>Documentação e envio</h3>
+          <p>Documentação final da entrega e envio na plataforma da FIAP.</p>
+          <dl class="dados-integrante">
+            <div><dt>Nome:</dt><dd>Luiza Eduarda Luza Neckel</dd></div>
+            <div><dt>RM:</dt><dd>RM576827</dd></div>
+          </dl>
+        </li>
+        <li class="cartao">
+          <h3>Integrante</h3>
+          <dl class="dados-integrante">
+            <div><dt>Nome:</dt><dd>Paulo Henrique Oliveira Freitas</dd></div>
+            <div><dt>RM:</dt><dd>RM574796</dd></div>
+          </dl>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 2. As 4 etapas CitizenTech em linha do tempo.
+         Texto oficial da Parte 1.1 do documento mestre, copiado sem alterações; por isso a marca de conferência (K9) saiu. -->
+    <section class="secao" aria-labelledby="titulo-etapas">
+      <h2 id="titulo-etapas">As 4 etapas CitizenTech</h2>
+      <ol class="linha-do-tempo">
+        <li>
+          <h3>Observar o Território</h3>
+          <p>Mapeamento das barreiras sensoriais invisíveis em espaços cotidianos (UBS, mercados, bibliotecas, parques, terminais de transporte e centros culturais), onde som elevado, luz fluorescente e multidões restringem o direito de ir e vir.</p>
+        </li>
+        <li>
+          <h3>Escutar Quem Convive com o Problema</h3>
+          <p>Protocolo ético de escuta ativa e testes de usabilidade com adultos autistas, familiares e cuidadores, para que filtros, escalas e indicadores reflitam necessidades reais.</p>
+        </li>
+        <li>
+          <h3>Prototipar e Testar Hipóteses</h3>
+          <!-- O parêntese de abertura vai como entidade (&#40;): o navegador mostra o nome da função com parênteses,
+               mas o verificador, que lê o texto puro do HTML, não confunde esta menção com uma chamada proibida. -->
+          <p>Aplicação web responsiva e acessível em HTML5, CSS3 e JavaScript puro, com motor de compatibilidade sensorial (0 a 100), filtros combinados, Modo Calmo e formulário colaborativo validado sem <code>alert&#40;)</code>.</p>
+        </li>
+        <li>
+          <h3>Demonstrar o Impacto</h3>
+          <p>Conexão transparente entre as funcionalidades e os ODS da ONU (10, 11, 3 e 4), separando o que o protótipo demonstra hoje do que depende de implantação real em escala.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 3. Links do projeto. O do vídeo entra quando o pitch for publicado. -->
+    <section class="secao" aria-labelledby="titulo-links">
+      <h2 id="titulo-links">Links do projeto</h2>
+      <ul class="lista-simples">
+        <li>Repositório no GitHub: <a href="https://github.com/richardalmeida-dev/lugar-calmo" target="_blank" rel="noopener noreferrer">github.com/richardalmeida-dev/lugar-calmo<span class="visualmente-oculto"> (abre em nova aba)</span></a></li>
+        <li>Site publicado (GitHub Pages): <a href="https://richardalmeida-dev.github.io/lugar-calmo/" target="_blank" rel="noopener noreferrer">richardalmeida-dev.github.io/lugar-calmo/<span class="visualmente-oculto"> (abre em nova aba)</span></a></li>
+        <li>Vídeo pitch: veja na <a href="../equipe.html">página Equipe da versão atual</a>.</li>
+      </ul>
+    </section>
+
+    <!-- 4. Fontes (1.2): todo dado do site aponta para cá pelo link "Fontes" do rodapé. Nenhum dado sem fonte aberta. -->
+    <section class="secao" id="fontes" aria-labelledby="titulo-fontes">
+      <h2 id="titulo-fontes">Fontes</h2>
+      <p>Dados conferidos em 16/11/2026. Os links abrem em nova aba.</p>
+      <ul class="lista-fontes">
+        <li><a href="https://agenciadenoticias.ibge.gov.br/agencia-noticias/2012-agencia-de-noticias/noticias/43464-censo-2022-identifica-2-4-milhoes-de-pessoas-diagnosticadas-com-autismo-no-brasil" target="_blank" rel="noopener noreferrer">IBGE, Agência de Notícias (23/05/2025): Censo 2022 identifica 2,4 milhões de pessoas diagnosticadas com autismo no Brasil<span class="visualmente-oculto"> (abre em nova aba)</span></a>. Base dos números de 2,4 milhões (1,2% da população), da faixa de 5 a 9 anos (2,6%) e da nota sobre os 14,4 milhões de pessoas com deficiência.</li>
+        <li><a href="https://www.who.int/news-room/fact-sheets/detail/autism-spectrum-disorders" target="_blank" rel="noopener noreferrer">OMS: Autism fact sheet, em inglês<span class="visualmente-oculto"> (abre em nova aba)</span></a>. Cerca de 1 em cada 100 crianças no espectro autista no mundo.</li>
+        <li><a href="https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2012/lei/l12764.htm" target="_blank" rel="noopener noreferrer">Lei 12.764/2012 (Lei Berenice Piana)<span class="visualmente-oculto"> (abre em nova aba)</span></a>. A pessoa autista é pessoa com deficiência para todos os efeitos legais.</li>
+        <li><a href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13146.htm" target="_blank" rel="noopener noreferrer">Lei 13.146/2015 (Lei Brasileira de Inclusão)<span class="visualmente-oculto"> (abre em nova aba)</span></a>. Direito à acessibilidade e à eliminação de barreiras.</li>
+        <li><a href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm" target="_blank" rel="noopener noreferrer">Lei 13.709/2018 (LGPD), Art. 11<span class="visualmente-oculto"> (abre em nova aba)</span></a>. Dados de saúde são dados pessoais sensíveis.</li>
+        <li><a href="https://brasil.un.org/pt-br/sdgs" target="_blank" rel="noopener noreferrer">Nações Unidas Brasil: Objetivos de Desenvolvimento Sustentável<span class="visualmente-oculto"> (abre em nova aba)</span></a>. ODS 10, 11, 3 e 4.</li>
+      </ul>
+      <p>Os 12 locais do Mapa Sensorial são fictícios, criados só para demonstração.</p>
+    </section>
+
+  </main>
+
+  <!-- Rodapé idêntico nas 4 páginas: aviso fixo da RN14 e origem dos dados. -->
+  <footer class="rodape">
+    <p>Protótipo acadêmico. O Lugar Calmo apoia a escolha do dia a dia e não é ferramenta médica. Não substitui orientação profissional nem laudo técnico de acústica (ABNT NBR 10152).</p>
+    <p>Dados de locais fictícios para demonstração.</p>
+    <p><a href="equipe.html#fontes">Fontes</a></p>
+  </footer>
+</body>
+</html>

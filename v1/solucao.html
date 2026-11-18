@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Mapa Sensorial do Lugar Calmo: ajuste seu perfil sensorial, escolha o turno e veja os lugares do mais ao menos compatível.">
+  <title>Solução | Lugar Calmo (versão 1)</title>
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <!-- Ordem fixa (8.1): base (variáveis) primeiro e temas por último, para que Modo Calmo e Alto Contraste sobrescrevam as variáveis. -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/componentes.css">
+  <link rel="stylesheet" href="css/temas.css">
+  <!-- R2 e K3: todos com defer e sem módulos (abre em file://). A ordem importa:
+       dados e cálculo antes de quem os usa; app.js por último liga tudo. -->
+  <script src="js/acessibilidade.js" defer></script>
+  <script src="js/dados.js" defer></script>
+  <script src="js/calculo.js" defer></script>
+  <script src="js/render.js" defer></script>
+  <script src="js/formulario.js" defer></script>
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <!-- Cópia congelada da versão 1 (tag v1.0), mantida só para comparação com a versão atual. -->
+  <p class="aviso-versao">Você está na <strong>versão 1</strong> do protótipo, de antes das entrevistas com pessoas reais. <a href="../index.html">Ver a versão atual</a>.</p>
+  <!-- Atalho de teclado: pula o cabeçalho e vai direto ao conteúdo. -->
+  <a class="pular-conteudo" href="#conteudo">Ir para o conteúdo</a>
+
+  <!-- Cabeçalho idêntico nas 4 páginas (RF16); só o aria-current muda. -->
+  <header class="cabecalho">
+    <a class="marca" href="index.html"><img src="img/favicon.svg" alt="" width="32" height="32"> Lugar Calmo</a>
+    <!-- Menu horizontal com 4 links, sempre visível, sem hambúrguer (R11). -->
+    <nav aria-label="Navegação principal">
+      <ul class="menu">
+        <li><a href="index.html">Início</a></li>
+        <li><a href="solucao.html" aria-current="page">Solução</a></li>
+        <li><a href="impacto.html">Impacto</a></li>
+        <li><a href="equipe.html">Equipe</a></li>
+      </ul>
+    </nav>
+    <!-- Barra de acessibilidade (M5). O comportamento fica em js/acessibilidade.js (RF13, RF14, RF15).
+         O aria-label de A-/A+ começa pelo texto visível para cumprir o WCAG 2.5.3 (Rótulo no Nome, RNF01). -->
+    <div class="barra-acessibilidade" role="group" aria-label="Preferências de leitura">
+      <button type="button" id="btn-fonte-menos" aria-label="A-: diminuir tamanho do texto">A-</button>
+      <button type="button" id="btn-fonte-mais" aria-label="A+: aumentar tamanho do texto">A+</button>
+      <button type="button" id="btn-contraste" aria-pressed="false">Alto contraste</button>
+      <button type="button" id="btn-modo-calmo" aria-pressed="false">Modo Calmo</button>
+    </div>
+  </header>
+
+  <!-- tabindex="-1" deixa o link "Ir para o conteúdo" mover o foco para cá. -->
+  <main id="conteudo" tabindex="-1">
+    <!-- Título e instrução lado a lado no desktop (layout.css), para o painel caber inteiro acima da dobra (11.3).
+         A frase é curta para ficar em 1 linha; o h2 da lista já diz que a ordem vai do mais ao menos compatível. -->
+    <div class="titulo-solucao">
+      <h1>Mapa Sensorial</h1>
+      <p class="introducao">Diga o quanto cada estímulo incomoda você e escolha o turno.</p>
+    </div>
+
+    <!-- Duas colunas a partir de 1024 px (11.3): painel à esquerda, resultados e formulário à direita. -->
+    <div class="layout-solucao">
+
+      <!-- Painel de perfil (M1, 8.3). Sticky no desktop para ficar à vista enquanto a lista rola. -->
+      <aside id="painel-perfil" aria-labelledby="titulo-perfil">
+        <h2 id="titulo-perfil">Seu perfil sensorial</h2>
+
+        <!-- Perfis rápidos (RF19): app.js troca o aria-pressed do botão ativo. -->
+        <div class="grupo-perfis">
+          <p class="rotulo-grupo" id="rotulo-perfis">Perfis rápidos</p>
+          <div class="perfis-rapidos" role="group" aria-labelledby="rotulo-perfis">
+            <button type="button" class="btn-perfil" data-perfil="padrao" aria-pressed="true">Padrão</button>
+            <button type="button" class="btn-perfil" data-perfil="ana" aria-pressed="false">Perfil Ana</button>
+            <button type="button" class="btn-perfil" data-perfil="rafael" aria-pressed="false">Perfil Rafael</button>
+          </div>
+        </div>
+
+        <!-- 4 sliders de 0 a 5, padrão 3 (RN01, RF02). Sem fieldset por controle para economizar altura (8.3).
+             O <output> mostra o número ao lado; app.js atualiza também o aria-valuetext ("3 de 5").
+             aria-live="off" no <output>: o slider já anuncia o valor e o #resumo-lista anuncia o resultado;
+             sem isso o leitor de tela repetiria o número a cada passo (sobrecarga sensorial, R10). -->
+        <div class="controle-sensibilidade">
+          <div class="controle-linha">
+            <label for="sens-ruido">Ruído</label>
+            <span class="legenda" id="leg-ruido">0 nada, 5 muito</span>
+            <output id="valor-ruido" for="sens-ruido" aria-live="off">3</output>
+          </div>
+          <input type="range" id="sens-ruido" min="0" max="5" step="1" value="3" aria-describedby="leg-ruido">
+        </div>
+
+        <div class="controle-sensibilidade">
+          <div class="controle-linha">
+            <label for="sens-luz">Iluminação</label>
+            <span class="legenda" id="leg-luz">0 nada, 5 muito</span>
+            <output id="valor-luz" for="sens-luz" aria-live="off">3</output>
+          </div>
+          <input type="range" id="sens-luz" min="0" max="5" step="1" value="3" aria-describedby="leg-luz">
+        </div>
+
+        <div class="controle-sensibilidade">
+          <div class="controle-linha">
+            <label for="sens-lotacao">Lotação</label>
+            <span class="legenda" id="leg-lotacao">0 nada, 5 muito</span>
+            <output id="valor-lotacao" for="sens-lotacao" aria-live="off">3</output>
+          </div>
+          <input type="range" id="sens-lotacao" min="0" max="5" step="1" value="3" aria-describedby="leg-lotacao">
+        </div>
+
+        <div class="controle-sensibilidade">
+          <div class="controle-linha">
+            <label for="sens-cheiro">Cheiros</label>
+            <span class="legenda" id="leg-cheiro">0 nada, 5 muito</span>
+            <output id="valor-cheiro" for="sens-cheiro" aria-live="off">3</output>
+          </div>
+          <input type="range" id="sens-cheiro" min="0" max="5" step="1" value="3" aria-describedby="leg-cheiro">
+        </div>
+
+        <!-- Turno (RF03): rádios com visual de botão em grade de 3. Manhã é o turno inicial (8.3, K3). -->
+        <fieldset class="seletor-turno">
+          <legend>Turno</legend>
+          <div class="opcoes-turno">
+            <div class="opcao-turno">
+              <input type="radio" id="turno-manha" name="turno" value="manha" checked>
+              <label for="turno-manha">Manhã</label>
+            </div>
+            <div class="opcao-turno">
+              <input type="radio" id="turno-tarde" name="turno" value="tarde">
+              <label for="turno-tarde">Tarde</label>
+            </div>
+            <div class="opcao-turno">
+              <input type="radio" id="turno-noite" name="turno" value="noite">
+              <label for="turno-noite">Noite</label>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Volta sliders a 3, perfil Padrão e turno Manhã; não mexe nos filtros (8.3). -->
+        <button type="button" id="btn-restaurar">Restaurar perfil padrão</button>
+
+        <!-- RN02: aparece só quando a soma das sensibilidades é zero (app.js tira o hidden). -->
+        <p id="aviso-soma-zero" class="aviso" hidden>Nenhuma sensibilidade informada. Todos os locais abertos aparecem com nota 100. Ajuste os controles para ver seu resultado.</p>
+      </aside>
+
+      <div class="coluna-principal">
+
+        <!-- Resultados (M3, M7). A lista começa vazia; render.js cria os cards (RF01, R8). -->
+        <section aria-labelledby="titulo-resultados">
+          <h2 id="titulo-resultados">Lugares do mais ao menos compatível</h2>
+
+          <!-- Filtros (RF09). As opções de tipo vêm de js/dados.js (K4): aqui só a primeira, fixa. -->
+          <div class="filtros">
+            <div class="campo">
+              <label for="filtro-tipo">Tipo de local</label>
+              <select id="filtro-tipo">
+                <option value="todos">Todos os tipos</option>
+              </select>
+            </div>
+            <div class="opcao">
+              <input type="checkbox" id="filtro-adaptacao">
+              <label for="filtro-adaptacao">Somente com espaço calmo e saída fácil</label>
+            </div>
+          </div>
+
+          <!-- Resumo dinâmico (RF18): sempre no DOM e vazio no início, para o leitor de tela anunciar cada mudança (K3). -->
+          <p id="resumo-lista" class="resumo" aria-live="polite"></p>
+
+          <!-- Limitação declarada do protótipo (6.1). -->
+          <p class="nota-limitacao">Neste protótipo, ruído e lotação variam por turno; iluminação e cheiro são valores fixos por local.</p>
+
+          <!-- Lista ordenada: a posição é o ranking (RF06). role="list" mantém a semântica de lista no Safari,
+               que a remove quando o CSS tira os marcadores. -->
+          <ol id="lista-locais" class="lista-locais" role="list"></ol>
+
+          <p id="estado-vazio" class="estado-vazio" hidden>Nenhum lugar corresponde aos filtros. Escolha outro tipo ou desmarque "Somente com espaço calmo e saída fácil".</p>
+        </section>
+
+        <!-- Contribuição comunitária (M4, seção 12). formulario.js valida e mostra os erros na página (RF10 a RF12). -->
+        <section aria-labelledby="titulo-formulario">
+          <h2 id="titulo-formulario">Avaliar ou sugerir um local</h2>
+          <p>Conte como estava um lugar que você visitou. A avaliação entra na lista só nesta sessão e some ao recarregar a página.</p>
+
+          <!-- novalidate desliga os balões do navegador: só as nossas mensagens aparecem, iguais em todo navegador (12.1). -->
+          <form id="form-contribuicao" class="formulario" novalidate>
+            <!-- Resumo de erros (RF12): formulario.js preenche e tira o hidden. -->
+            <div id="resumo-erros" class="resumo-erros" role="alert" tabindex="-1" hidden></div>
+
+            <p>Campos com * são obrigatórios.</p>
+
+            <!-- Cada campo: <label for>, aria-describedby para o erro e <p class="erro-campo"> escondido (K5). -->
+            <div class="campo">
+              <label for="campo-nome">Nome do local *</label>
+              <input type="text" id="campo-nome" maxlength="60" autocomplete="off" aria-required="true" aria-describedby="erro-nome">
+              <p class="erro-campo" id="erro-nome" hidden></p>
+            </div>
+
+            <!-- Opções de tipo vêm de js/dados.js (K4). -->
+            <div class="campo">
+              <label for="campo-tipo">Tipo de local *</label>
+              <select id="campo-tipo" aria-required="true" aria-describedby="erro-tipo">
+                <option value="">Selecione</option>
+              </select>
+              <p class="erro-campo" id="erro-tipo" hidden></p>
+            </div>
+
+            <!-- Turno da visita: nenhum vem marcado (K5). Os rádios também apontam para o erro,
+                 porque o foco vai para o primeiro rádio quando há erro. -->
+            <fieldset id="campo-turno" aria-describedby="erro-turno">
+              <legend>Turno da visita *</legend>
+              <div class="opcoes-linha">
+                <div class="opcao">
+                  <input type="radio" id="campo-turno-manha" name="campo-turno" value="manha" aria-describedby="erro-turno">
+                  <label for="campo-turno-manha">Manhã</label>
+                </div>
+                <div class="opcao">
+                  <input type="radio" id="campo-turno-tarde" name="campo-turno" value="tarde" aria-describedby="erro-turno">
+                  <label for="campo-turno-tarde">Tarde</label>
+                </div>
+                <div class="opcao">
+                  <input type="radio" id="campo-turno-noite" name="campo-turno" value="noite" aria-describedby="erro-turno">
+                  <label for="campo-turno-noite">Noite</label>
+                </div>
+              </div>
+              <p class="erro-campo" id="erro-turno" hidden></p>
+            </fieldset>
+
+            <!-- Níveis de 0 a 5 em select, não em campo numérico: garante inteiro e é mais fácil de usar (RN11, 12.1). -->
+            <fieldset>
+              <legend>Níveis observados (0 nada, 5 muito)</legend>
+              <div class="grade-niveis">
+                <div class="campo">
+                  <label for="campo-ruido">Ruído *</label>
+                  <select id="campo-ruido" aria-required="true" aria-describedby="erro-ruido">
+                    <option value="">Selecione</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                  </select>
+                  <p class="erro-campo" id="erro-ruido" hidden></p>
+                </div>
+                <div class="campo">
+                  <label for="campo-luz">Iluminação *</label>
+                  <select id="campo-luz" aria-required="true" aria-describedby="erro-luz">
+                    <option value="">Selecione</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                  </select>
+                  <p class="erro-campo" id="erro-luz" hidden></p>
+                </div>
+                <div class="campo">
+                  <label for="campo-lotacao">Lotação *</label>
+                  <select id="campo-lotacao" aria-required="true" aria-describedby="erro-lotacao">
+                    <option value="">Selecione</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                  </select>
+                  <p class="erro-campo" id="erro-lotacao" hidden></p>
+                </div>
+                <div class="campo">
+                  <label for="campo-cheiro">Cheiros *</label>
+                  <select id="campo-cheiro" aria-required="true" aria-describedby="erro-cheiro">
+                    <option value="">Selecione</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                  </select>
+                  <p class="erro-campo" id="erro-cheiro" hidden></p>
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- Adaptações: opcionais, sem mensagem de erro. -->
+            <fieldset>
+              <legend>Adaptações observadas</legend>
+              <div class="opcoes-linha">
+                <div class="opcao">
+                  <input type="checkbox" id="campo-calmo">
+                  <label for="campo-calmo">Espaço calmo</label>
+                </div>
+                <div class="opcao">
+                  <input type="checkbox" id="campo-saida">
+                  <label for="campo-saida">Saída fácil</label>
+                </div>
+                <div class="opcao">
+                  <input type="checkbox" id="campo-equipe">
+                  <label for="campo-equipe">Equipe treinada</label>
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- Opcional. As opções vêm de js/dados.js (K4). -->
+            <div class="campo">
+              <label for="campo-perfil">Quem está enviando</label>
+              <select id="campo-perfil">
+                <option value="">Prefiro não dizer</option>
+              </select>
+            </div>
+
+            <!-- O contador não é aria-live, para não anunciar a cada tecla; o textarea aponta para ele (12.2). -->
+            <div class="campo">
+              <label for="campo-comentario">Comentário sensorial</label>
+              <textarea id="campo-comentario" maxlength="200" rows="3" aria-describedby="contador-comentario erro-comentario"></textarea>
+              <p id="contador-comentario" class="contador">0 de 200 caracteres</p>
+              <p class="erro-campo" id="erro-comentario" hidden></p>
+            </div>
+
+            <!-- Privacidade (RNF06, LGPD): dica visível acima do botão e confirmação obrigatória. -->
+            <p id="dica-privacidade" class="dica">Não escreva nomes, telefones ou informações de saúde de ninguém.</p>
+            <div class="opcao">
+              <input type="checkbox" id="campo-privacidade" aria-required="true" aria-describedby="dica-privacidade erro-privacidade">
+              <label for="campo-privacidade">Confirmo que não incluí nomes ou dados pessoais de terceiros. *</label>
+            </div>
+            <p class="erro-campo" id="erro-privacidade" hidden></p>
+
+            <button type="submit" class="btn-primario">Enviar avaliação</button>
+
+            <!-- Sempre no DOM (sem hidden) para o leitor de tela anunciar; vazio, o CSS o colapsa (K5). -->
+            <p id="mensagem-sucesso" class="mensagem-sucesso" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- Rodapé idêntico nas 4 páginas: aviso fixo da RN14 e origem dos dados. -->
+  <footer class="rodape">
+    <p>Protótipo acadêmico. O Lugar Calmo apoia a escolha do dia a dia e não é ferramenta médica. Não substitui orientação profissional nem laudo técnico de acústica (ABNT NBR 10152).</p>
+    <p>Dados de locais fictícios para demonstração.</p>
+    <p><a href="equipe.html#fontes">Fontes</a></p>
+  </footer>
+</body>
+</html>

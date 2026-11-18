@@ -1,0 +1,273 @@
+/* =====================================================================
+   layout.css: estrutura das páginas (PRD 11.3).
+   Mobile-first: tudo começa em uma coluna e ganha colunas em telas
+   maiores com media queries. Nenhuma largura fixa que cause rolagem
+   horizontal em 320 px (RNF02). Só var(--...), nenhuma cor fixa (K2).
+   ===================================================================== */
+
+/* ---------- Cabeçalho comum das 4 páginas ---------- */
+
+/* Marca, menu e barra de acessibilidade quebram linha sozinhos
+   (flex-wrap). Menu sempre visível, sem hambúrguer (R11). */
+.cabecalho {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espaco-3) var(--espaco-6);
+  padding: var(--espaco-3) var(--espaco-4);
+  border-bottom: 1px solid var(--cor-borda);
+  background: var(--cor-superficie);
+}
+
+.marca {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espaco-2);
+  min-height: var(--toque-min);
+  color: var(--cor-texto);
+  font-size: 1.25rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+.marca:hover {
+  text-decoration: underline;
+}
+.marca img {
+  width: 2rem;
+  height: 2rem;
+}
+
+/* Menu horizontal com 4 links (R11, RF16): flex com quebra de linha. */
+.menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco-1) var(--espaco-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menu a {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--espaco-3);
+  border-radius: var(--raio);
+  color: var(--cor-texto);
+  font-weight: 600;
+  text-decoration: none;
+}
+.menu a:hover {
+  text-decoration: underline;
+}
+
+/* Página atual (aria-current): sublinhado grosso e negrito, além da cor,
+   para a cor não ser a única pista (RNF01). */
+.menu a[aria-current="page"] {
+  color: var(--cor-primaria);
+  font-weight: 800;
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: .4em;
+}
+
+.barra-acessibilidade {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco-2);
+}
+
+/* 11.3: cabeçalho compacto a partir de 1024 px, com marca, menu e barra
+   de acessibilidade numa linha só, para o painel de perfil da Solução
+   caber inteiro acima da dobra (1366x650 e 1440x800). Só o respiro em
+   volta encolhe: links e botões continuam com 44 px de altura (RNF13).
+   O flex-wrap da regra base continua valendo: se faltar largura (A+),
+   o cabeçalho quebra linha em vez de criar rolagem horizontal (RNF02). */
+@media (min-width: 1024px) {
+  .cabecalho {
+    gap: var(--espaco-2) var(--espaco-4);
+    padding-block: var(--espaco-1);
+  }
+
+  .menu a {
+    padding: 0 var(--espaco-2);
+  }
+
+  /* A barra vai para a direita, alinhada ao fim da mesma linha. */
+  .barra-acessibilidade {
+    margin-left: auto;
+  }
+}
+
+/* ---------- Conteúdo principal e rodapé ---------- */
+
+main {
+  display: block;
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: var(--espaco-6) var(--espaco-4) var(--espaco-8);
+}
+
+/* Linha de texto curta (70ch) é mais fácil de acompanhar. */
+main p {
+  max-width: var(--largura-texto);
+}
+
+/* 11.3: no desktop o cabeçalho ficou compacto; o respiro do topo do
+   conteúdo encolhe junto para o painel da Solução começar a no máximo
+   120 px do topo. No celular fica o padding de cima (mobile-first). */
+@media (min-width: 1024px) {
+  main {
+    padding-top: var(--espaco-4);
+  }
+}
+
+.secao {
+  margin-top: var(--espaco-8);
+}
+
+.rodape {
+  padding: var(--espaco-6) var(--espaco-4);
+  border-top: 1px solid var(--cor-borda);
+  background: var(--cor-superficie);
+  font-size: .9375rem;
+}
+.rodape p {
+  max-width: 80rem;
+  margin: 0 auto var(--espaco-2);
+}
+
+/* ---------- Página inicial ---------- */
+
+/* Hero: texto e ilustração empilhados no celular, lado a lado a partir
+   de 768 px. */
+.hero {
+  display: grid;
+  gap: var(--espaco-6);
+  align-items: center;
+}
+
+.hero-imagem {
+  justify-self: center;
+  width: 100%;
+  max-width: 15rem;
+}
+
+@media (min-width: 768px) {
+  .hero {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  }
+
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+}
+
+/* ---------- Grades genéricas (cartões, colunas) ---------- */
+
+/* min(16rem, 100%) impede que a coluna mínima passe da tela em 320 px. */
+.grade-cartoes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(16rem, 100%), 1fr));
+  gap: var(--espaco-4);
+  margin: 0 0 var(--espaco-4);
+  padding: 0;
+  list-style: none;
+}
+
+/* Níveis de evidência (8.5): duas colunas lado a lado a partir de 768 px. */
+.colunas-evidencia {
+  display: grid;
+  gap: var(--espaco-4);
+  margin-bottom: var(--espaco-4);
+}
+
+@media (min-width: 768px) {
+  .colunas-evidencia {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ---------- Página Solução (Mapa Sensorial) ---------- */
+
+/* Título da Solução: no celular, h1 e instrução empilhados como em
+   qualquer página (o div não muda nada). A partir de 1024 px ficam lado
+   a lado numa linha só, h1 menor e instrução com 1 linha, para o painel
+   de perfil começar a no máximo 120 px do topo (11.3: painel inteiro
+   acima da dobra em 1366x650). O flex-wrap joga a instrução para baixo
+   do h1 se faltar largura (A+), sem rolagem horizontal (RNF02). */
+@media (min-width: 1024px) {
+  .titulo-solucao {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 var(--espaco-4);
+    margin-bottom: var(--espaco-2);
+  }
+
+  .titulo-solucao h1 {
+    margin: 0;
+    font-size: 1.75rem;
+  }
+
+  /* Uma linha só cabe sem o limite de 70ch; a frase já é curta. */
+  .titulo-solucao .introducao {
+    max-width: none;
+    margin: 0;
+    font-size: 1rem;
+  }
+}
+
+/* Celular: uma coluna, na ordem painel, resultados e formulário (11.3). */
+.layout-solucao {
+  display: grid;
+  gap: var(--espaco-6);
+}
+
+/* minmax(0, ...) e min-width: 0 deixam a coluna encolher sem estourar. */
+.coluna-principal {
+  display: grid;
+  gap: var(--espaco-8);
+  min-width: 0;
+}
+
+/* Desktop: painel fixo à esquerda (sticky) e resultados à direita.
+   Valores exatamente como na seção 11.3 do PRD. O painel rola por
+   dentro se não couber na altura da tela, sem arrastar a página. */
+@media (min-width: 1024px) {
+  .layout-solucao {
+    display: grid;
+    grid-template-columns: 380px minmax(0, 1fr);
+    gap: var(--espaco-6);
+    align-items: start;
+  }
+
+  #painel-perfil {
+    position: sticky;
+    top: 10px;
+    max-height: calc(100vh - 20px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
+
+/* Lista de cards: 1 coluna no celular, grade automática acima de 768 px
+   (11.3). Cada <li> estica o card para todos terem a mesma altura. */
+.lista-locais {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--espaco-4);
+  margin: 0 0 var(--espaco-4);
+  padding: 0;
+  list-style: none;
+}
+
+.lista-locais > li {
+  display: flex;
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .lista-locais {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
