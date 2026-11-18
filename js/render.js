@@ -32,8 +32,8 @@
 
   // Estímulos efetivos do <dl> (K8): chave em avaliacao.efetivos e rótulo exibido.
   const ESTIMULOS = Object.freeze([['ruido', 'Ruído'], ['luz', 'Iluminação'], ['lotacao', 'Lotação'], ['cheiro', 'Cheiros']]);
-  // Nome em minúsculas para a frase do alerta de gatilho ("ruído e luz fortes...").
-  const NOMES_ALERTA = Object.freeze({ ruido: 'ruído', luz: 'iluminação', lotacao: 'lotação', cheiro: 'cheiros' });
+  // Nome em minúsculas e no singular para a frase do alerta ("cheiro está forte", "ruído e cheiro estão fortes").
+  const NOMES_ALERTA = Object.freeze({ ruido: 'ruído', luz: 'iluminação', lotacao: 'lotação', cheiro: 'cheiro' });
 
   /**
    * Cria um elemento só com textContent e setAttribute (contrato 10.2).

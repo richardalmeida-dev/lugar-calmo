@@ -369,7 +369,7 @@
       // Não sabemos se o local fecha em algum turno; os turnos sem dados ficam como "sem-dados", não "fechado".
       turnosAbertos: ['manha', 'tarde', 'noite'],
       ficticio: false,
-      // RN13: o card mostra "Contribuição cidadã (sessão, não verificada)".
+      // RN13: o card mostra o selo de origem de calculo.descreverOrigem (relato comunitário ou estabelecimento; versão 2).
       enviadoPeloUsuario: true,
       // hasOwnProperty: só chaves da própria lista valem (uma chave herdada como "toString" vira null).
       perfilRemetente: Object.prototype.hasOwnProperty.call(PERFIS_REMETENTE, valores.perfilRemetente) ? valores.perfilRemetente : null,
