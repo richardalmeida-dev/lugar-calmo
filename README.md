@@ -58,6 +58,7 @@ lugar-calmo/
 ├── impacto.html      Impacto social, ODS, validação e visão futura
 ├── equipe.html       Equipe, metodologia e fontes
 ├── README.md
+├── integrantes.txt  Nome e RM de cada integrante
 ├── css/  base.css, layout.css, componentes.css, temas.css
 ├── js/   dados.js, calculo.js, render.js, formulario.js, acessibilidade.js, app.js
 └── img/  aneis-hero.svg, icone-tranquilo.svg, icone-atencao.svg, icone-evitar.svg,

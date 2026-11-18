@@ -1,0 +1,14 @@
+Global Solution 2026/2 - CitizenTech
+Projeto: Lugar Calmo (Mapa Sensorial)
+Grupo: Bug Hunters
+
+Nome completo | RM
+Alexandre Oliveira Machado | RM575671
+Francisco Wellington da Silva Rodrigues | RM566700
+Luiza Eduarda Luza Neckel | RM576827
+Paulo Henrique Oliveira Freitas | RM574796
+Richard Henrique Godoy de Almeida | RM574660
+
+Site: https://richardalmeida-dev.github.io/lugar-calmo/
+Repositório: https://github.com/richardalmeida-dev/lugar-calmo
+Vídeo pitch: [PREENCHER URL]
